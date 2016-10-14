@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
                 //create db
                 long endTime = System.currentTimeMillis();
                 long costTime = endTime - startTime;
-                if (costTime > sleepTime) {
+                if (costTime < sleepTime) {
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -33,6 +33,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                finish();
             }
         }).start();
     }
