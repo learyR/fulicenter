@@ -1,39 +1,91 @@
 package cn.ucai.fulicenter.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 
 public class MainActivity extends AppCompatActivity {
-    RadioButton mLayoutNewGood,mLayoutCart,mLayoutBoutique,mLayoutCategory, mLayoutPersonal;
-    TextView mtvGoodsNumber;
+
+
+
+    @Bind(R.id.layout_new_good)
+    RadioButton mLayoutNewGood;
+    @Bind(R.id.layout_boutique)
+    RadioButton mLayoutBoutique;
+    @Bind(R.id.layout_category)
+    RadioButton mLayoutCategory;
+    @Bind(R.id.layout_cart)
+    RadioButton mLayoutCart;
+    @Bind(R.id.personal)
+    RadioButton mPersonal;
+
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
+    RadioButton[] mRbArray;
+    int mIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        L.i("MainActivity onCreate");
+        ButterKnife.bind(this);
+        //    L.i("MainActivity onCreate");
         initView();
+
     }
 
     private void initView() {
-        mLayoutCart = (RadioButton) findViewById(R.id.layout_cart);
-        mLayoutBoutique = (RadioButton) findViewById(R.id.layout_boutique);
-        mLayoutCategory = (RadioButton) findViewById(R.id.layout_category);
-        mLayoutPersonal = (RadioButton) findViewById(R.id.personal);
-        mLayoutNewGood = (RadioButton) findViewById(R.id.layout_new_good);
-        mtvGoodsNumber = (TextView) findViewById(R.id.tvGoodsNumber);
+        mRbArray=new RadioButton[5];
+        mRbArray[0] = mLayoutNewGood;
+        mRbArray[1] = mLayoutBoutique;
+        mRbArray[2] = mLayoutCategory;
+        mRbArray[3] = mLayoutCart;
+        mRbArray[4] = mPersonal;
+
     }
 
     public void onCheckedChange(View view) {
         switch (view.getId()) {
+            case R.id.layout_new_good:
+                mIndex = 0;
+                NewGoodsFragment newGoodsFragment = new NewGoodsFragment();
+                mFragmentManager = getSupportFragmentManager();
+                mFragmentTransaction = mFragmentManager.beginTransaction();
+                mFragmentTransaction.replace(R.id.fragment_container, newGoodsFragment);
+                mFragmentTransaction.commit();
+                break;
+            case R.id.layout_boutique:
+                mIndex = 1;
+                break;
+            case R.id.layout_category:
+                mIndex = 2;
+                break;
+            case R.id.layout_cart:
+                mIndex = 3;
+                break;
+            case R.id.personal:
+                mIndex = 4;
+                break;
+        }
+        setRadioButtonStatus();
+    }
 
+    private void setRadioButtonStatus() {
+
+        for (int i=0;i<mRbArray.length;i++) {
+            if (i==mIndex) {
+                mRbArray[i].setChecked(true);
+            } else {
+                mRbArray[i].setChecked(false);
+            }
         }
     }
 }
