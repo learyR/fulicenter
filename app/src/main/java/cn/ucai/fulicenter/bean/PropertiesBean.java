@@ -1,22 +1,9 @@
 package cn.ucai.fulicenter.bean;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Arrays;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
-public class PropertiesBean {
-
-    /**
-     * id : 9529
-     * goodsId : 0
-     * colorId : 7
-     * colorName : 白色
-     * colorCode : #ffffff
-     * colorImg :
-     * colorUrl : https://detail.tmall.com/item.htm?spm=a1z10.5-b.w4011-3609973698.66.6PtkVY&id=520971761592&rn=5ddf7aff64dbe1a24da0eaf7409e3389&abbucket=15&skuId=3104519239252
-     * albums : [{"pid":7677,"imgId":28296,"imgUrl":"201509/goods_img/7677_P_1442391216432.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28297,"imgUrl":"201509/goods_img/7677_P_1442391216215.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28298,"imgUrl":"201509/goods_img/7677_P_1442391216692.png","thumbUrl":"no_picture.gif"},{"pid":7677,"imgId":28299,"imgUrl":"201509/goods_img/7677_P_1442391216316.png","thumbUrl":"no_picture.gif"}]
-     */
+public class PropertiesBean implements Serializable {
 
     private int id;
     private int goodsId;
@@ -25,31 +12,7 @@ public class PropertiesBean {
     private String colorCode;
     private String colorImg;
     private String colorUrl;
-    /**
-     * pid : 7677
-     * imgId : 28296
-     * imgUrl : 201509/goods_img/7677_P_1442391216432.png
-     * thumbUrl : no_picture.gif
-     */
-
-    private List<AlbumsBean> albums;
-
-    @Override
-    public String toString() {
-        return "PropertiesBean{" +
-                "id=" + id +
-                ", goodsId=" + goodsId +
-                ", colorId=" + colorId +
-                ", colorName='" + colorName + '\'' +
-                ", colorCode='" + colorCode + '\'' +
-                ", colorImg='" + colorImg + '\'' +
-                ", colorUrl='" + colorUrl + '\'' +
-                ", albums=" + albums +
-                '}';
-    }
-
-    public PropertiesBean() {
-    }
+    private AlbumsBean[] albums;
 
     public int getId() {
         return id;
@@ -107,50 +70,25 @@ public class PropertiesBean {
         this.colorUrl = colorUrl;
     }
 
-    public List<AlbumsBean> getAlbums() {
+    public AlbumsBean[] getAlbums() {
         return albums;
     }
 
-    public void setAlbums(List<AlbumsBean> albums) {
+    public void setAlbums(AlbumsBean[] albums) {
         this.albums = albums;
     }
 
-    public static class AlbumsBean {
-        private int pid;
-        private int imgId;
-        private String imgUrl;
-        private String thumbUrl;
-
-        public int getPid() {
-            return pid;
-        }
-
-        public void setPid(int pid) {
-            this.pid = pid;
-        }
-
-        public int getImgId() {
-            return imgId;
-        }
-
-        public void setImgId(int imgId) {
-            this.imgId = imgId;
-        }
-
-        public String getImgUrl() {
-            return imgUrl;
-        }
-
-        public void setImgUrl(String imgUrl) {
-            this.imgUrl = imgUrl;
-        }
-
-        public String getThumbUrl() {
-            return thumbUrl;
-        }
-
-        public void setThumbUrl(String thumbUrl) {
-            this.thumbUrl = thumbUrl;
-        }
+    @Override
+    public String toString() {
+        return "PropertiesBean{" +
+                "id=" + id +
+                ", goodsId=" + goodsId +
+                ", colorId=" + colorId +
+                ", colorName='" + colorName + '\'' +
+                ", colorCode='" + colorCode + '\'' +
+                ", colorImg='" + colorImg + '\'' +
+                ", colorUrl='" + colorUrl + '\'' +
+                ", albums=" + Arrays.toString(albums) +
+                '}';
     }
 }
