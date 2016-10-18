@@ -3,17 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ccc"
    >
 
-        <RelativeLayout
+        <FrameLayout
+
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
             android:layout_above="@+id/vLine"
-            >
+           >
 
-        </RelativeLayout>
+        </FrameLayout>
         <View
             android:id="@+id/vLine"
             android:layout_width="match_parent"
@@ -21,7 +23,8 @@
             android:background="#f60"
             android:layout_above="@+id/rg_bottom_layout"
             />
-        <RadioGroup
+        <LinearLayout
+            android:background="#fff"
             android:layout_alignParentBottom="true"
             android:id="@+id/rg_bottom_layout"
             android:layout_width="match_parent"
@@ -34,7 +37,7 @@
             android:text="新品"
             style="@style/menu_item_style"
             android:button="@null"
-            android:checked="true"
+            android:checked="false"
             android:textColor="@color/main_botton_text_color"
             />
         <RadioButton
@@ -92,5 +95,5 @@
             android:checked="false"
             android:textColor="@color/main_botton_text_color"
             />
-        </RadioGroup>
+        </LinearLayout>
 </RelativeLayout>

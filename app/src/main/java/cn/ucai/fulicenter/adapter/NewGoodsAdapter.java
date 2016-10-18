@@ -15,7 +15,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
-import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.utils.ImageLoader;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -27,6 +28,12 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     RecyclerView parent;
     String textFooter;
     boolean isMore;
+
+    public NewGoodsAdapter(List<NewGoodsBean> newGoodsList, Context context) {
+        this.newGoodsList = newGoodsList;
+        this.context = context;
+        this.newGoodsList.addAll(newGoodsList);
+    }
 
     public boolean isMore() {
         return isMore;
@@ -73,6 +80,8 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         NewGoodsBean newGoods = newGoodsList.get(position);
         newGoodsViewHolder.tvGoodsName.setText(newGoods.getGoodsName());
         newGoodsViewHolder.tvGoodsPrice.setText(newGoods.getCurrencyPrice());
+        ImageLoader.downloadImg(context,newGoodsViewHolder.ivNewGoods,newGoods.getGoodsThumb());
+
     }
 
     @Override
@@ -87,6 +96,14 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         } else {
             return I.TYPE_ITEM;
         }
+    }
+
+    public void initData(ArrayList<NewGoodsBean> goodsList) {
+        if (newGoodsList != null) {
+            this.newGoodsList.clear();
+        }
+        this.newGoodsList.addAll(goodsList);
+        notifyDataSetChanged();
     }
 
     static class NewGoodsViewHolder extends RecyclerView.ViewHolder {

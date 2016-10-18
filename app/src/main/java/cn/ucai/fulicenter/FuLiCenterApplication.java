@@ -12,7 +12,11 @@ public class FuLiCenterApplication extends Application {
     }
     public static FuLiCenterApplication getInstance(){
         if (instance == null) {
-            instance = new FuLiCenterApplication();
+            synchronized (instance) {
+                if (instance == null) {
+                    instance = new FuLiCenterApplication();
+                }
+            }
         }
         return instance;
     }

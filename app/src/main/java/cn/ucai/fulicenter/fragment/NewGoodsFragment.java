@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
-import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
-import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,7 +107,7 @@ public class NewGoodsFragment extends Fragment {
     }
 
     private void downloadNewGoodsList(final int action, int pageId) {
-        final OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>();
+        final OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(getActivity());
         utils.url(I.SERVER_ROOT+I.REQUEST_FIND_NEW_BOUTIQUE_GOODS+I.QUESTION+"cat_id="+0)
                 .addParam(I.PAGE_ID,pageId+"")
                 .addParam(I.PAGE_SIZE,PAGE_SIZE+"")
