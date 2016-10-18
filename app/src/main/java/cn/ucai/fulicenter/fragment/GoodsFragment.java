@@ -60,20 +60,68 @@ public class GoodsFragment extends Fragment {
         ButterKnife.bind(this, view);
         initView();
         initData();
-
+        setListener();
         return view;
     }
 
-    private void initData() {
+    private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+
+    private void setPullDownListener() {
+        mSrlNewGoods.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pageId = 1;
+                mSrlNewGoods.setRefreshing(true);
+                mtvRefresh.setVisibility(View.VISIBLE);
+                downloadNewGoods(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    private void setPullUpListener() {
+        mrvNewGoods.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPosition = mLayoutManager.findLastVisibleItemPosition();
+                if (lastPosition == mAdapter.getItemCount() - 1 && newState == RecyclerView.SCROLL_STATE_IDLE && mAdapter.isMore()) {
+                    pageId++;
+                    downloadNewGoods(I.ACTION_PULL_UP);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPosition = mLayoutManager.findFirstVisibleItemPosition();
+                mSrlNewGoods.setEnabled(firstPosition == 0);
+            }
+        });
+    }
+
+    private void downloadNewGoods(final int action) {
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 mSrlNewGoods.setRefreshing(false);
                 mtvRefresh.setVisibility(View.GONE);
-
+                mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> goodsList = ConvertUtils.array2List(result);
-                    mAdapter.initData(goodsList);
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        mAdapter.initData(goodsList);
+                    } else {
+                        mAdapter.addData(goodsList);
+                    }
+
+                    if (goodsList.size() < I.PAGE_SIZE_DEFAULT) {
+                        mAdapter.setMore(false);
+                    }
+                } else {
+                    mAdapter.setMore(false);
                 }
             }
 
@@ -81,10 +129,15 @@ public class GoodsFragment extends Fragment {
             public void onError(String error) {
                 mSrlNewGoods.setRefreshing(false);
                 mtvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error"+error);
             }
         });
+    }
+
+    private void initData() {
+       downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
     private void initView() {

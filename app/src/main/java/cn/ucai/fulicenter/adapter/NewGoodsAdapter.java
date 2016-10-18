@@ -26,7 +26,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     Context context;
 
     RecyclerView parent;
-    String textFooter;
+   // String textFooter;
     boolean isMore;
 
     public NewGoodsAdapter(List<NewGoodsBean> newGoodsList, Context context) {
@@ -41,12 +41,13 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
 
     public void setMore(boolean more) {
         isMore = more;
-    }
-
-    public void setTextFooter(String textFooter) {
-        this.textFooter = textFooter;
         notifyDataSetChanged();
     }
+
+    /*public void setTextFooter(String textFooter) {
+        this.textFooter = textFooter;
+        notifyDataSetChanged();
+    }*/
 
 
     @Override
@@ -71,9 +72,9 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == getItemCount() - 1) {
+        if (position==getItemCount()-1) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
-            footerViewHolder.tvFooter.setText(textFooter);
+            footerViewHolder.tvFooter.setText(getFooter());
             return;
         }
         NewGoodsViewHolder newGoodsViewHolder = (NewGoodsViewHolder) holder;
@@ -84,9 +85,13 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
 
     }
 
+    private int getFooter() {
+        return isMore?R.string.load_more:R.string.no_more;
+    }
+
     @Override
     public int getItemCount() {
-        return newGoodsList==null?0:newGoodsList.size()+1;
+        return newGoodsList!=null?newGoodsList.size()+1:0;
     }
 
     @Override
@@ -102,6 +107,11 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         if (newGoodsList != null) {
             this.newGoodsList.clear();
         }
+        this.newGoodsList.addAll(goodsList);
+        notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<NewGoodsBean> goodsList) {
         this.newGoodsList.addAll(goodsList);
         notifyDataSetChanged();
     }
