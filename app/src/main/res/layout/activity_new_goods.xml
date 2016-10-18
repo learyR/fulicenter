@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ccc"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.NewGoodsActivity"
 >
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,13 +97,26 @@
                     android:textColor="#000"
                     />
                 <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
                     android:layout_below="@id/tvGoodsName"
-                    android:layout_above="@+id/tvGoodsBrief"
+                    android:layout_above="@+id/flowIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                 </android.support.v4.view.ViewPager>
-
+                <cn.ucai.fulicenter.view.FlowIndicator
+                    android:id="@+id/flowIndicator"
+                    android:layout_above="@+id/tvGoodsBrief"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    app:count="6"
+                    app:r="10dp"
+                    app:space="8dp"
+                    app:normal_color="#ccc"
+                    app:focus="0"
+                    app:focus_color="#f60"
+                    />
 
                 <TextView
                     android:id="@+id/tvGoodsPrice"
