@@ -1,11 +1,13 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,10 +15,13 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.bean.NewGoodsBean;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
+import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -26,8 +31,9 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     Context context;
 
     RecyclerView parent;
-   // String textFooter;
+    // String textFooter;
     boolean isMore;
+
 
     public NewGoodsAdapter(List<NewGoodsBean> newGoodsList, Context context) {
         this.newGoodsList = newGoodsList;
@@ -72,7 +78,7 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position==getItemCount()-1) {
+        if (position == getItemCount() - 1) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             footerViewHolder.tvFooter.setText(getFooter());
             return;
@@ -81,17 +87,17 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         NewGoodsBean newGoods = newGoodsList.get(position);
         newGoodsViewHolder.tvGoodsName.setText(newGoods.getGoodsName());
         newGoodsViewHolder.tvGoodsPrice.setText(newGoods.getCurrencyPrice());
-        ImageLoader.downloadImg(context,newGoodsViewHolder.ivNewGoods,newGoods.getGoodsThumb());
-
+        ImageLoader.downloadImg(context, newGoodsViewHolder.ivNewGoods, newGoods.getGoodsThumb());
+        newGoodsViewHolder.layoutNewGood.setTag(newGoods.getGoodsId());
     }
 
     private int getFooter() {
-        return isMore?R.string.load_more:R.string.no_more;
+        return isMore ? R.string.load_more : R.string.no_more;
     }
 
     @Override
     public int getItemCount() {
-        return newGoodsList!=null?newGoodsList.size()+1:0;
+        return newGoodsList != null ? newGoodsList.size() + 1 : 0;
     }
 
     @Override
@@ -116,24 +122,37 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    static class NewGoodsViewHolder extends RecyclerView.ViewHolder {
+
+
+    class NewGoodsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivNewGoods)
         ImageView ivNewGoods;
         @Bind(R.id.tvGoodsName)
         TextView tvGoodsName;
         @Bind(R.id.tvGoodsPrice)
         TextView tvGoodsPrice;
+        @Bind(R.id.layout_new_good)
+        LinearLayout layoutNewGood;
 
 
         public NewGoodsViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.layout_new_good)
+        public void onGoodsItemClick() {
+            int goodsId = (int) layoutNewGood.getTag();
+           /* context.startActivity(new Intent(context, GoodsDetailsActivity.class)
+                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));*/
+            MFGT.gotoGoodsDetailsActivity(context, goodsId);
         }
     }
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tvFooter)
         TextView tvFooter;
+
         FooterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
