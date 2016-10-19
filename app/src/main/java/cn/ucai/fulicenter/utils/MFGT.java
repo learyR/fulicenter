@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 
@@ -22,18 +23,22 @@ public class MFGT {
         Intent intent = new Intent();
         intent.setClass(context,cls);
         context.startActivity(intent);
-        context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
     public static void gotoGoodsDetailsActivity(Context context, int goodsId){
         Intent intent = new Intent();
         intent.setClass(context, GoodsDetailsActivity.class);
         intent.putExtra(I.GoodsDetails.KEY_GOODS_ID, goodsId);
-        context.startActivity(intent);
-        ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+        startActivity(context,intent);
     }
-    public static void stratActivity(Activity context,Intent intent){
+    public static void startActivity(Context context,Intent intent){
         context.startActivity(intent);
-        context.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        ((Activity)context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+    public static void gotoBoutiqueChildActivity(Context context, int catId){
+        Intent intent = new Intent();
+        intent.setClass(context, BoutiqueChildActivity.class);
+        intent.putExtra(I.Boutique.CAT_ID, catId);
+        startActivity(context,intent);
     }
 
 }
