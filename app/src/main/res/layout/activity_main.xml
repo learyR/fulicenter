@@ -37,7 +37,7 @@
             android:text="新品"
             style="@style/menu_item_style"
             android:button="@null"
-            android:checked="false"
+            android:checked="true"
             android:textColor="@color/main_botton_text_color"
             />
         <RadioButton

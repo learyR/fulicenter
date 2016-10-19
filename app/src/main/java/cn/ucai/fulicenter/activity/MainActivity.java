@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     RadioButton[] mRbArray;
     int mIndex;
+    int mCurrentIndex;
 
     Fragment[] mFragment;
     GoodsFragment mNewGoodsFragment;
@@ -52,14 +53,16 @@ public class MainActivity extends AppCompatActivity {
     private void initFragment() {
         mFragment = new Fragment[5];
         mNewGoodsFragment = new GoodsFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
         mFragment[0] = mNewGoodsFragment;
+        mFragment[1] = mBoutiqueFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
+                .add(R.id.fragment_container,mBoutiqueFragment)
+                .hide(mBoutiqueFragment)
                 .show(mNewGoodsFragment)
                 .commit();
-        mBoutiqueFragment = new BoutiqueFragment();
-        mFragment[1] = mBoutiqueFragment;
 
     }
 
@@ -85,11 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.layout_boutique:
                 mIndex = 1;
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, mBoutiqueFragment)
-                        .show(mBoutiqueFragment)
-                        .commit();
                 break;
             case R.id.layout_category:
                 mIndex = 2;
@@ -101,7 +99,21 @@ public class MainActivity extends AppCompatActivity {
                 mIndex = 4;
                 break;
         }
+        setFragment();
+
+    }
+
+    private void setFragment() {
+        if (mIndex != mCurrentIndex) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.hide(mFragment[mCurrentIndex]);
+            if (!mFragment[mIndex].isAdded()) {
+                ft.add(R.id.fragment_container, mFragment[mIndex]);
+            }
+            ft.show(mFragment[mIndex]).commit();
+        }
         setRadioButtonStatus();
+        mCurrentIndex=mIndex;
     }
 
     private void setRadioButtonStatus() {

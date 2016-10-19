@@ -39,8 +39,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
 
     public BoutiqueAdapter(Context context, ArrayList<BoutiqueBean> boutiqueList) {
         this.context = context;
-        this.boutiqueList = new ArrayList<>();
-        this.boutiqueList.addAll(boutiqueList);
+        this.boutiqueList = boutiqueList;
     }
 
     @Override

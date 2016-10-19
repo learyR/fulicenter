@@ -146,6 +146,7 @@ public class BoutiqueFragment extends Fragment {
         boutiqueList = new ArrayList<>();
         boutiqueAdapter = new BoutiqueAdapter(mContext,boutiqueList);
         mLayoutManager = new LinearLayoutManager(mContext);
+
         srlBoutique.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
@@ -153,8 +154,8 @@ public class BoutiqueFragment extends Fragment {
                 getResources().getColor(R.color.google_yellow)
         );
         rvBoutique.setLayoutManager(mLayoutManager);
-        rvBoutique.setAdapter(boutiqueAdapter);
         rvBoutique.setHasFixedSize(true);
+        rvBoutique.setAdapter(boutiqueAdapter);
         rvBoutique.addItemDecoration(new SpaceItemDecoration(15));
 
     }
