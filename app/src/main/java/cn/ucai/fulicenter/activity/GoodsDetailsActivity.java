@@ -38,7 +38,7 @@ public class GoodsDetailsActivity extends BaseActivity {
     GoodsDetailsActivity mContext;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_goods_details);
         ButterKnife.bind(this);
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);

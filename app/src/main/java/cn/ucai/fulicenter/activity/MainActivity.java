@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
     BoutiqueFragment mBoutiqueFragment;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //    L.i("MainActivity onCreate");

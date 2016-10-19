@@ -1,69 +1,62 @@
-package cn.ucai.fulicenter.fragment;
-
+package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.adapter.NewGoodsAdapter;
+import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class GoodsFragment extends BaseFragment {
+public class BoutiqueChildActivity extends BaseActivity {
 
-
+    @Bind(R.id.ivBack)
+    ImageView ivBack;
+    @Bind(R.id.tvGoodsName)
+    TextView tvGoodsName;
     @Bind(R.id.tvRefresh)
-    TextView mtvRefresh;
-    @Bind(R.id.rvNewGoods)
-    RecyclerView mrvNewGoods;
-    @Bind(R.id.srlNewGoods)
-    SwipeRefreshLayout mSrlNewGoods;
+    TextView tvRefresh;
+    @Bind(R.id.rv)
+    RecyclerView rv;
+    @Bind(R.id.srl)
+    SwipeRefreshLayout srl;
 
 
-    MainActivity mContext;
+    BoutiqueChildActivity mContext;
     NewGoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mNewGoodsList;
     int pageId = 1;
     GridLayoutManager mLayoutManager;
-
-
-    public GoodsFragment() {
-        // Required empty public constructor
-    }
-
-
+    BoutiqueBean boutique;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_goods, container, false);
-        ButterKnife.bind(this, view);
-       /* initView();
-        initData();
-        setListener();*/
-        super.onCreateView(inflater, container, savedInstanceState);
-        return view;
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_boutique_child);
+        ButterKnife.bind(this);
+        boutique = (BoutiqueBean) getIntent().getSerializableExtra(I.Boutique.CAT_ID);
+        if (boutique == null) {
+            finish();
+        }
+        super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -73,19 +66,19 @@ public class GoodsFragment extends BaseFragment {
     }
 
     private void setPullDownListener() {
-        mSrlNewGoods.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pageId = 1;
-                mSrlNewGoods.setRefreshing(true);
-                mtvRefresh.setVisibility(View.VISIBLE);
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
                 downloadNewGoods(I.ACTION_PULL_DOWN);
             }
         });
     }
 
     private void setPullUpListener() {
-        mrvNewGoods.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -100,17 +93,22 @@ public class GoodsFragment extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstPosition = mLayoutManager.findFirstVisibleItemPosition();
-                mSrlNewGoods.setEnabled(firstPosition == 0);
+                srl.setEnabled(firstPosition == 0);
             }
         });
     }
+    @Override
+    protected void initData() {
+        downloadNewGoods(I.ACTION_DOWNLOAD);
+
+    }
 
     private void downloadNewGoods(final int action) {
-        NetDao.downloadNewGoods(mContext,I.CAT_ID, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadNewGoods(mContext,boutique.getId(), pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
-                mSrlNewGoods.setRefreshing(false);
-                mtvRefresh.setVisibility(View.GONE);
+                srl.setRefreshing(false);
+                tvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(true);
                 if (result != null && result.length > 0) {
                     ArrayList<NewGoodsBean> goodsList = ConvertUtils.array2List(result);
@@ -130,8 +128,8 @@ public class GoodsFragment extends BaseFragment {
 
             @Override
             public void onError(String error) {
-                mSrlNewGoods.setRefreshing(false);
-                mtvRefresh.setVisibility(View.GONE);
+                srl.setRefreshing(false);
+                tvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error"+error);
@@ -140,32 +138,26 @@ public class GoodsFragment extends BaseFragment {
     }
 
     @Override
-    protected void initData() {
-       downloadNewGoods(I.ACTION_DOWNLOAD);
-    }
-
-    @Override
     protected void initView() {
-        mContext = (MainActivity) getContext();
+        mContext = this;
         mNewGoodsList = new ArrayList<>();
         mAdapter = new NewGoodsAdapter(mNewGoodsList, mContext);
-        mSrlNewGoods.setColorSchemeColors(
+        srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
         mLayoutManager =new GridLayoutManager(mContext, I.COLUM_NUM);
-        mrvNewGoods.setLayoutManager(mLayoutManager);
-        mrvNewGoods.setHasFixedSize(true);
-        mrvNewGoods.addItemDecoration(new SpaceItemDecoration(15));
-        mrvNewGoods.setAdapter(mAdapter);
-
+        rv.setLayoutManager(mLayoutManager);
+        rv.setHasFixedSize(true);
+        rv.addItemDecoration(new SpaceItemDecoration(15));
+        rv.setAdapter(mAdapter);
+        tvGoodsName.setText(boutique.getName());
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    @OnClick(R.id.ivBack)
+    public void onClick() {
+        MFGT.finish(mContext);
     }
 }

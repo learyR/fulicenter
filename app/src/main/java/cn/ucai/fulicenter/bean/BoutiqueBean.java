@@ -1,9 +1,11 @@
 package cn.ucai.fulicenter.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/10/13.
  */
-public class BoutiqueBean {
+public class BoutiqueBean implements Serializable{
 
     /**
      * id : 262
