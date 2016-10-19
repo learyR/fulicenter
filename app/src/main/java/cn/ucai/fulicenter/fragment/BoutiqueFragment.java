@@ -32,7 +32,7 @@ import cn.ucai.fulicenter.views.SpaceItemDecoration;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
 
 
     @Bind(R.id.tv_boutique_Refresh)
@@ -58,13 +58,14 @@ public class BoutiqueFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_boutique, container, false);
         ButterKnife.bind(this, view);
-        initView();
+        /*initView();
         initData();
-        setListener();
+        setListener();*/
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
-
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
@@ -81,7 +82,8 @@ public class BoutiqueFragment extends Fragment {
         });
     }
 
-    private void downloadNewGoods(final int action) {
+
+    private   void downloadNewGoods(final int action) {
         NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
@@ -136,12 +138,13 @@ public class BoutiqueFragment extends Fragment {
             }
         });
     }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mContext = (MainActivity) getContext();
         boutiqueList = new ArrayList<>();
         boutiqueAdapter = new BoutiqueAdapter(mContext,boutiqueList);

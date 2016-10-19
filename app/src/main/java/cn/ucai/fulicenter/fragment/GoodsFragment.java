@@ -30,7 +30,7 @@ import cn.ucai.fulicenter.views.SpaceItemDecoration;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GoodsFragment extends Fragment {
+public class GoodsFragment extends BaseFragment {
 
 
     @Bind(R.id.tvRefresh)
@@ -59,13 +59,15 @@ public class GoodsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_goods, container, false);
         ButterKnife.bind(this, view);
-        initView();
+       /* initView();
         initData();
-        setListener();
+        setListener();*/
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
@@ -137,11 +139,13 @@ public class GoodsFragment extends Fragment {
         });
     }
 
-    private void initData() {
+    @Override
+    protected void initData() {
        downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mContext = (MainActivity) getContext();
         mNewGoodsList = new ArrayList<>();
         mAdapter = new NewGoodsAdapter(mNewGoodsList, mContext);
