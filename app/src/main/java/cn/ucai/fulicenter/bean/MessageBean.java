@@ -1,28 +1,14 @@
 package cn.ucai.fulicenter.bean;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
 public class MessageBean {
 
     /**
      * success : true
-     * msg : 删除购物车中的商品成功
+     * msg : 添加收藏成功
      */
 
     private boolean success;
     private String msg;
-
-    @Override
-    public String toString() {
-        return "MessageBean{" +
-                "success=" + success +
-                ", msg='" + msg + '\'' +
-                '}';
-    }
-
-    public MessageBean() {
-    }
 
     public boolean isSuccess() {
         return success;
@@ -38,5 +24,13 @@ public class MessageBean {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageBean{" +
+                "success=" + success +
+                ", msg='" + msg + '\'' +
+                '}';
     }
 }

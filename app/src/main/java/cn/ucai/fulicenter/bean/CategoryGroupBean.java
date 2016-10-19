@@ -1,31 +1,18 @@
 package cn.ucai.fulicenter.bean;
 
-/**
- * Created by Administrator on 2016/10/13.
- */
-public class CategoryGroupBean {
+import java.io.Serializable;
+
+public class CategoryGroupBean implements Serializable {
 
     /**
-     * id : 344
-     * name : 最IN
-     * imageUrl : muying/2.jpg
+     * id : 334
+     * name : 配饰
+     * imageUrl : muying/Jewelry.png
      */
 
     private int id;
     private String name;
     private String imageUrl;
-
-    @Override
-    public String toString() {
-        return "CategoryGroupBean{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                '}';
-    }
-
-    public CategoryGroupBean() {
-    }
 
     public int getId() {
         return id;

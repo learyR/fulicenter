@@ -16,8 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;

@@ -33,4 +33,10 @@ public class NetDao {
                .targetClass(BoutiqueBean[].class)
                .execute(listener);
     }
+    public static void downloadCategory(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener){
+        OkHttpUtils utils = new OkHttpUtils(context);
+       utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
+               .targetClass(BoutiqueBean[].class)
+               .execute(listener);
+    }
 }
