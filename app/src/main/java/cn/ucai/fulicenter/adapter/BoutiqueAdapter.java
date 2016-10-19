@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.views.FooterViewHolder;
 
 /**
  * Created by Administrator on 2016/10/18.
@@ -37,7 +39,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
 
     public BoutiqueAdapter(Context context, ArrayList<BoutiqueBean> boutiqueList) {
         this.context = context;
-        this.boutiqueList = boutiqueList;
+        this.boutiqueList = new ArrayList<>();
         this.boutiqueList.addAll(boutiqueList);
     }
 
@@ -92,17 +94,17 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         }
     }
 
-    static class FooterViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tvFooter)
-        TextView tvFooter;
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+    public void initData(ArrayList<BoutiqueBean> boutiqueList) {
+        if (this.boutiqueList != null) {
+            this.boutiqueList.clear();
         }
+        this.boutiqueList.addAll(boutiqueList);
+        notifyDataSetChanged();
     }
 
-    static class BoutiqueViewHolder extends RecyclerView.ViewHolder {
+
+
+     class BoutiqueViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_boutique_title)
         TextView tvBoutiqueTitle;
         @Bind(R.id.tv_boutique_name)
@@ -111,9 +113,13 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         TextView tvBoutiqueDescription;
         @Bind(R.id.iv_boutique)
         ImageView ivBoutique;
+        @Bind(R.id.layout_boutique)
+        LinearLayout layoutBoutique;
+
         BoutiqueViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
     }
 }

@@ -22,6 +22,7 @@ import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.views.FooterViewHolder;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -38,7 +39,6 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
     public NewGoodsAdapter(List<NewGoodsBean> newGoodsList, Context context) {
         this.newGoodsList = newGoodsList;
         this.context = context;
-        this.newGoodsList.addAll(newGoodsList);
     }
 
     public boolean isMore() {
@@ -149,13 +149,5 @@ public class NewGoodsAdapter extends RecyclerView.Adapter {
         }
     }
 
-    static class FooterViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tvFooter)
-        TextView tvFooter;
 
-        FooterViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
 }
