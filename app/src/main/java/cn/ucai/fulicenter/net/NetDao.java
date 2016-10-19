@@ -27,10 +27,10 @@ public class NetDao {
                .targetClass(GoodsDetailsBean.class)
                .execute(listener);
     }
-    public static void downloadBoutique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean> listener){
+    public static void downloadBoutique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener){
         OkHttpUtils utils = new OkHttpUtils(context);
        utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
-               .targetClass(BoutiqueBean.class)
+               .targetClass(BoutiqueBean[].class)
                .execute(listener);
     }
 }

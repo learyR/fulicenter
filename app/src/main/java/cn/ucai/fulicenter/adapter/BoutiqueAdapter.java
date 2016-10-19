@@ -102,9 +102,13 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    public void addData(ArrayList<BoutiqueBean> goodsList) {
+        this.boutiqueList.addAll(goodsList);
+        notifyDataSetChanged();
+    }
 
 
-     class BoutiqueViewHolder extends RecyclerView.ViewHolder {
+    class BoutiqueViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_boutique_title)
         TextView tvBoutiqueTitle;
         @Bind(R.id.tv_boutique_name)

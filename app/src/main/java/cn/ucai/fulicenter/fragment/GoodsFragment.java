@@ -154,8 +154,8 @@ public class GoodsFragment extends Fragment {
         mLayoutManager =new GridLayoutManager(mContext, I.COLUM_NUM);
         mrvNewGoods.setLayoutManager(mLayoutManager);
         mrvNewGoods.setHasFixedSize(true);
-        mrvNewGoods.setAdapter(mAdapter);
         mrvNewGoods.addItemDecoration(new SpaceItemDecoration(15));
+        mrvNewGoods.setAdapter(mAdapter);
 
     }
 

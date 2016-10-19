@@ -67,7 +67,6 @@ public class GoodsDetailsActivity extends AppCompatActivity {
                     finish();
                 }
             }
-
             @Override
             public void onError(String error) {
                 finish();

@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 
@@ -29,13 +30,12 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.personal)
     RadioButton mPersonal;
 
-    FragmentManager mFragmentManager;
-    FragmentTransaction mFragmentTransaction;
     RadioButton[] mRbArray;
     int mIndex;
 
     Fragment[] mFragment;
     GoodsFragment mNewGoodsFragment;
+    BoutiqueFragment mBoutiqueFragment;
 
 
     @Override
@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .show(mNewGoodsFragment)
                 .commit();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mFragment[1] = mBoutiqueFragment;
+
     }
 
     private void initView() {
@@ -82,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.layout_boutique:
                 mIndex = 1;
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, mBoutiqueFragment)
+                        .show(mBoutiqueFragment)
+                        .commit();
                 break;
             case R.id.layout_category:
                 mIndex = 2;
