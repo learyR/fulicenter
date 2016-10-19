@@ -20,7 +20,7 @@ import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.views.FlowIndicator;
 import cn.ucai.fulicenter.views.SlideAutoLoopView;
 
-public class GoodsDetailsActivity extends AppCompatActivity {
+public class GoodsDetailsActivity extends BaseActivity {
 
     @Bind(R.id.tvEnglishName)
     TextView tvEnglishName;
@@ -36,27 +36,29 @@ public class GoodsDetailsActivity extends AppCompatActivity {
     WebView wbGoodsBrief;
     int goodsId;
     GoodsDetailsActivity mContext;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_goods_details);
         ButterKnife.bind(this);
-       goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
+        goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         L.i("details"+goodsId);
         if (goodsId == 0) {
             finish();
         }
-        initView();
+        super.onCreate(savedInstanceState);
+       /* initView();
         initData();
         setListener();
+*/
+    }
+    @Override
+    protected void setListener() {
 
     }
 
-    private void setListener() {
-
-    }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         NetDao.downloadGoodsDetails(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
@@ -103,14 +105,15 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         return urls;
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mContext = this;
     }
     @OnClick(R.id.ivBack)
     public  void onBackClick(){
         MFGT.finish(this);
     }
-    public void onBackPressed(){
-        MFGT.finish(this);
-    }
+//    public void onBackPressed(){
+//        MFGT.finish(this);
+//    }
 }

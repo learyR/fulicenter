@@ -15,7 +15,7 @@ import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
 
@@ -38,16 +38,25 @@ public class MainActivity extends AppCompatActivity {
     GoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         //    L.i("MainActivity onCreate");
-        initView();
-        initFragment();
+       /* initView();
+        initFragment();*/
+        super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+        initFragment();
     }
 
     private void initFragment() {
@@ -65,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
     }
-
-    private void initView() {
+    @Override
+    protected void initView() {
         mRbArray=new RadioButton[5];
         mRbArray[0] = mLayoutNewGood;
         mRbArray[1] = mLayoutBoutique;
@@ -125,5 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 mRbArray[i].setChecked(false);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
