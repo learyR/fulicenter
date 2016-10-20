@@ -44,8 +44,6 @@ public class CatChildFilterButton extends Button {
      * false:arrow up
      * */
     boolean mExpandOff;
-    private ConvertUtils Utils;
-
 
     public CatChildFilterButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,11 +56,7 @@ public class CatChildFilterButton extends Button {
     private void initPopupWindow() {
         mPopupWindow=new PopupWindow();
         mPopupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-        if(mgvCategory.getAdapter().getCount()<16){
-            mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-        }else{
-            mPopupWindow.setHeight(Utils.px2dp(mContext, 200));
-        }
+        mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setTouchable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xbb000000));
@@ -72,9 +66,9 @@ public class CatChildFilterButton extends Button {
 
     private void initGridView() {
         mgvCategory=new GridView(mContext);
-        mgvCategory.setColumnWidth(Utils.px2dp(mContext, 1500));
-        mgvCategory.setHorizontalSpacing(Utils.px2dp(mContext, 10));
-        mgvCategory.setVerticalSpacing(Utils.px2dp(mContext, 10));
+        mgvCategory.setColumnWidth(ConvertUtils.px2dp(mContext, 1500));
+        mgvCategory.setHorizontalSpacing(ConvertUtils.px2dp(mContext, 10));
+        mgvCategory.setVerticalSpacing(ConvertUtils.px2dp(mContext, 10));
         mgvCategory.setNumColumns(GridView.AUTO_FIT);
         mgvCategory.setBackgroundColor(Color.TRANSPARENT);
         mgvCategory.setPadding(3, 3, 3, 3);
@@ -129,11 +123,11 @@ public class CatChildFilterButton extends Button {
         public View getView(int position, View layout, final ViewGroup parent) {
             ViewChildHolder holder=null;
             if(layout==null){
-                layout= View.inflate(context, R.layout.item_category_child, null);
+                layout= View.inflate(context, R.layout.item_cat_filter, null);
                 holder=new ViewChildHolder();
                 holder.layoutItem=(RelativeLayout) layout.findViewById(R.id.layout_category_child);
-                holder.ivThumb=(ImageView) layout.findViewById(R.id.ivCategory_child_Img);
-                holder.tvChildName=(TextView) layout.findViewById(R.id.tvCategory_child_Name);
+                holder.ivThumb=(ImageView) layout.findViewById(R.id.ivCategoryChildThumb);
+                holder.tvChildName=(TextView) layout.findViewById(R.id.tvCategoryChildName);
                 layout.setTag(holder);
             }else{
                 holder=(ViewChildHolder) layout.getTag();
@@ -152,7 +146,7 @@ public class CatChildFilterButton extends Button {
                     }
                     Intent intent=new Intent(mContext, CategoryChildActivity.class);
                     intent.putExtra(I.CategoryChild.CAT_ID, child.getId());
-                    intent.putExtra("childList", Children);
+                    intent.putExtra(I.CategoryChild.ID, Children);
                     intent.putExtra(I.CategoryGroup.NAME, mbtnTop.getText().toString());
                     mContext.startActivity(intent);
                     ((CategoryChildActivity)mContext).finish();

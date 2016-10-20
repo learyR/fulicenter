@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -26,6 +25,7 @@ import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.views.CatChildFilterButton;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
@@ -58,7 +58,7 @@ public class CategoryChildActivity extends BaseActivity {
     @Bind(R.id.btnCatChildFilter)
     CatChildFilterButton btnCatChildFilter;
     String groupName;
-    ArrayList<CategoryChildBean>childList;
+    ArrayList<CategoryChildBean> childList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +117,7 @@ public class CategoryChildActivity extends BaseActivity {
     @Override
     protected void initData() {
         downloadCategoryChild(I.ACTION_DOWNLOAD);
-        btnCatChildFilter.setOnCatFilterClickListener(groupName,childList);
+        btnCatChildFilter.setOnCatFilterClickListener(groupName, childList);
 
     }
 
@@ -206,5 +206,10 @@ public class CategoryChildActivity extends BaseActivity {
         }
         mAdapter.setSortBy(sortBy);
 
+    }
+
+    @OnClick(R.id.ivBack)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }
