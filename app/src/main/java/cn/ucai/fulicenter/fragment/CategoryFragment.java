@@ -71,8 +71,10 @@ public class CategoryFragment extends BaseFragment {
                     ArrayList<CategoryGroupBean> groupList = ConvertUtils.array2List(result);
                     L.i("groupList" + groupList.size());
                     mGroupList.addAll(groupList);
-                    for (CategoryGroupBean g : groupList) {
-                        downloadCategoryChild(g.getId());
+                    for (int i = 0; i < groupList.size(); i++) {
+                        mChildList.add(new ArrayList<CategoryChildBean>());
+                        CategoryGroupBean g = groupList.get(i);
+                        downloadCategoryChild(g.getId(),i);
                     }
                 }
             }
@@ -84,7 +86,7 @@ public class CategoryFragment extends BaseFragment {
         });
     }
 
-    private void downloadCategoryChild(int parentId) {
+    private void downloadCategoryChild(int parentId, final int index) {
         NetDao.downloadCategoryChild(mContext, parentId, new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
             @Override
             public void onSuccess(CategoryChildBean[] result) {
@@ -93,7 +95,7 @@ public class CategoryFragment extends BaseFragment {
                 if (result != null && result.length > 0) {
                     ArrayList<CategoryChildBean> childList = ConvertUtils.array2List(result);
                     L.i("groupList" + childList.size());
-                    mChildList.add(childList);
+                    mChildList.set(index, childList);
                 }
                 if (groupCount == mChildList.size()) {
                     mAdapter.initData(mGroupList, mChildList);
