@@ -24,6 +24,7 @@
         android:textColor="#000"
         android:layout_toRightOf="@id/ivCategory_child_Img"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
         />
 
 </RelativeLayout>

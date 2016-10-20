@@ -11,7 +11,8 @@
             android:id="@+id/ivNewGoods"
             android:layout_width="200dp"
             android:layout_height="260dp"
-            android:src="@mipmap/goods_thumb"
+            android:src="@drawable/nopic"
+            android:layout_gravity="center"
             />
         <TextView
             android:id="@+id/tvGoodsName"
@@ -20,6 +21,7 @@
             android:text="产品名字"
             android:textSize="15sp"
             android:textColor="#000"
+            android:layout_marginLeft="10dp"
             />
         <TextView
             android:id="@+id/tvGoodsPrice"
@@ -28,5 +30,6 @@
             android:text="价格"
             android:textSize="15sp"
             android:textColor="#f00"
+            android:layout_marginLeft="10dp"
             />
 </LinearLayout>
