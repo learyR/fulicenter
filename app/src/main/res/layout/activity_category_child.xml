@@ -6,8 +6,38 @@
     tools:context="cn.ucai.fulicenter.activity.CategoryChildActivity"
     >
     <include layout="@layout/common_head_title" android:id="@+id/common_head_title"/>
-    <android.support.v4.widget.SwipeRefreshLayout
+    <LinearLayout
         android:layout_below="@+id/common_head_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lll"
+        android:background="@color/orange"
+        >
+
+        <Button
+            android:id="@+id/btn_sort_price"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="价格"
+            android:drawableRight="@drawable/arrow_order_down"
+            android:background="@null"
+            android:paddingRight="5dp"
+            />
+        <Button
+            android:id="@+id/btn_sort_addtime"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上架时间"
+            android:drawableRight="@drawable/arrow_order_up"
+            android:background="@null"
+            android:paddingRight="5dp"
+            />
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@+id/lll"
         android:id="@+id/srl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

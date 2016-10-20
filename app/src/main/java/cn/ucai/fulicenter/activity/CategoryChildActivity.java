@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,10 +13,10 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.NewGoodsAdapter;
-import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
@@ -43,13 +44,20 @@ public class CategoryChildActivity extends BaseActivity {
     int pageId = 1;
     GridLayoutManager mLayoutManager;
     int catId;
+    @Bind(R.id.btn_sort_price)
+    Button btnSortPrice;
+    @Bind(R.id.btn_sort_addtime)
+    Button btnSortAddtime;
+    boolean addTimeAsc;
+    boolean priceAsc;
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_category_child);
         ButterKnife.bind(this);
-        catId= getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
-        L.i("details"+catId);
+        catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        L.i("details" + catId);
         if (catId == 0) {
             finish();
         }
@@ -95,6 +103,7 @@ public class CategoryChildActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     protected void initData() {
         downloadCategoryChild(I.ACTION_DOWNLOAD);
@@ -102,7 +111,7 @@ public class CategoryChildActivity extends BaseActivity {
     }
 
     private void downloadCategoryChild(final int action) {
-        NetDao.downloadCategoryChild(mContext,catId, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadCategoryChild(mContext, catId, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 srl.setRefreshing(false);
@@ -130,7 +139,7 @@ public class CategoryChildActivity extends BaseActivity {
                 tvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
-                L.e("error"+error);
+                L.e("error" + error);
             }
         });
     }
@@ -147,10 +156,34 @@ public class CategoryChildActivity extends BaseActivity {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        mLayoutManager =new GridLayoutManager(mContext, I.COLUM_NUM);
+        mLayoutManager = new GridLayoutManager(mContext, I.COLUM_NUM);
         rv.setLayoutManager(mLayoutManager);
         rv.setHasFixedSize(true);
         rv.addItemDecoration(new SpaceItemDecoration(15));
         rv.setAdapter(mAdapter);
+    }
+
+    @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_sort_price:
+                if (priceAsc) {
+                    sortBy = I.SORT_BY_PRICE_ASC;
+                } else {
+                    sortBy = I.SORT_BY_PRICE_DESC;
+                }
+                priceAsc = !priceAsc;
+                break;
+            case R.id.btn_sort_addtime:
+                if (addTimeAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                }
+                addTimeAsc = !addTimeAsc;
+                break;
+        }
+        mAdapter.setSortBy(sortBy);
+
     }
 }
