@@ -4,18 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:background="@color/white"
-    android:id="@+id/layout_category"
-   >
-<ImageView
-    android:id="@+id/ivCategory_Group_Img"
-    android:paddingLeft="20dp"
-    android:layout_weight="1"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:src="@drawable/category_child"
-    android:scaleType="centerInside"
-    />
+    android:background="@drawable/divid_explist_group"
+    android:id="@+id/layout_category_child"
+    >
+    <ImageView
+        android:id="@+id/ivCategory_Group_Img"
+        android:paddingLeft="20dp"
+        android:layout_weight="1"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:src="@drawable/nopic"
+        android:scaleType="centerInside"
+        />
     <TextView
         android:id="@+id/tvCategory_Group_Name"
         android:layout_weight="5"
@@ -31,8 +31,8 @@
         android:id="@+id/ivCategory_Group_Down"
         android:layout_weight="1"
         android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/arrow2_down"
+        android:layout_height="50dp"
+        android:src="@mipmap/expand_on"
         android:scaleType="centerInside"
         />
 </LinearLayout>

@@ -23,6 +23,5 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void onBackPressed(){
         MFGT.finish(this);
-
     }
 }

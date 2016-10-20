@@ -69,15 +69,15 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         CategoryGroupViewHolder holder;
-        if (convertView == null) {
-            convertView = convertView.inflate(context, R.layout.item_category_group, null);
-            holder = new CategoryGroupViewHolder(convertView);
-            convertView.setTag(holder);
+        if (view == null) {
+            view = view.inflate(context, R.layout.item_category_group, null);
+            holder = new CategoryGroupViewHolder(view);
+            view.setTag(holder);
         } else {
-            convertView.getTag();
-            holder = (CategoryGroupViewHolder) convertView.getTag();
+            view.getTag();
+            holder = (CategoryGroupViewHolder) view.getTag();
         }
         CategoryGroupBean group = getGroup(groupPosition);
         if (group != null) {
@@ -85,31 +85,43 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
             ImageLoader.downloadImg(context, holder.ivCategoryGroupImg, group.getImageUrl());
             holder.tvCategoryGroupName.setText(group.getName());
         }
-        return convertView;
+        return view;
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
         CategoryChildViewHolder holder;
-        if (convertView == null) {
-            convertView = convertView.inflate(context, R.layout.item_category_child, null);
-            holder = new CategoryChildViewHolder(convertView);
-            convertView.setTag(holder);
+        if (view == null) {
+            view = view.inflate(context, R.layout.item_category_child, null);
+            holder = new CategoryChildViewHolder(view);
+            view.setTag(holder);
         } else {
-            convertView.getTag();
-            holder = (CategoryChildViewHolder) convertView.getTag();
+            view.getTag();
+            holder = (CategoryChildViewHolder) view.getTag();
         }
         CategoryChildBean child = getChild(groupPosition, childPosition);
         if (child != null) {
             ImageLoader.downloadImg(context, holder.ivCategoryChildImg, child.getImageUrl());
             holder.tvCategoryChildName.setText(child.getName());
         }
-        return convertView;
+        return view;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    public void initData(ArrayList<CategoryGroupBean> mGroupList, ArrayList<ArrayList<CategoryChildBean>> mChildList) {
+        if (groupList != null) {
+            groupList.clear();
+        }
+        groupList.addAll(mGroupList);
+        if (childList != null) {
+            childList.clear();
+        }
+        childList.addAll(mChildList);
+        notifyDataSetChanged();
     }
 
     static class CategoryGroupViewHolder {
