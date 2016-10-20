@@ -1,12 +1,11 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,66 +13,128 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 
 /**
  * Created by Administrator on 2016/10/19.
  */
-public class CategoryAdapter extends RecyclerView.Adapter {
+public class CategoryAdapter extends BaseExpandableListAdapter {
     Context context;
-    ArrayList<CategoryGroupBean> mList;
-    boolean isMore;
+    ArrayList<CategoryGroupBean> groupList;
+    ArrayList<ArrayList<CategoryChildBean>> childList;
 
-    public boolean isMore() {
-        return isMore;
-    }
-
-    public void setMore(boolean more) {
-        isMore = more;
-        notifyDataSetChanged();
-    }
-
-    public CategoryAdapter(Context context, ArrayList<CategoryGroupBean> mList) {
+    public CategoryAdapter(Context context, ArrayList<CategoryGroupBean> groupList, ArrayList<ArrayList<CategoryChildBean>> childList) {
         this.context = context;
-        this.mList = mList;
+        this.groupList = new ArrayList<>();
+        this.groupList.addAll(groupList);
+        this.childList = new ArrayList<>();
+        this.childList.addAll(childList);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater in = LayoutInflater.from(context);
-        View layout = in.inflate(R.layout.item_category, parent, false);
-        RecyclerView.ViewHolder holder = new CategoryViewHolder(layout);
-        return holder;
+    public int getGroupCount() {
+        return groupList != null ? groupList.size() : 0;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
-        CategoryGroupBean categoryGroupBean = mList.get(position);
-        categoryViewHolder.tvCategoryGroupName.setText(categoryGroupBean.getName());
-        categoryViewHolder.ivCategoryGroupDown.setImageResource(R.drawable.arrow2_down);
-        ImageLoader.downloadImg(context, categoryViewHolder.ivCategoryGroupImg, categoryGroupBean.getImageUrl());
+    public int getChildrenCount(int groupPosition) {
+        return childList != null && childList.get(groupPosition) != null ? childList.get(groupPosition).size() : 0;
     }
 
     @Override
-    public int getItemCount() {
-        return mList == null ? 0 : mList.size() + 1;
+    public CategoryGroupBean getGroup(int groupPosition) {
+        return groupList != null ? groupList.get(groupPosition) : null;
     }
 
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public CategoryChildBean getChild(int groupPosition, int childPosition) {
+        return childList != null && childList.get(groupPosition) != null ? childList.get(groupPosition).get(childPosition) : null;
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return 0;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return 0;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        CategoryGroupViewHolder holder;
+        if (convertView == null) {
+            convertView = convertView.inflate(context, R.layout.item_category_group, null);
+            holder = new CategoryGroupViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            convertView.getTag();
+            holder = (CategoryGroupViewHolder) convertView.getTag();
+        }
+        CategoryGroupBean group = getGroup(groupPosition);
+        if (group != null) {
+            holder.ivCategoryGroupDown.setImageResource(isExpanded ? R.mipmap.expand_off : R.mipmap.expand_on);
+            ImageLoader.downloadImg(context, holder.ivCategoryGroupImg, group.getImageUrl());
+            holder.tvCategoryGroupName.setText(group.getName());
+        }
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        CategoryChildViewHolder holder;
+        if (convertView == null) {
+            convertView = convertView.inflate(context, R.layout.item_category_child, null);
+            holder = new CategoryChildViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            convertView.getTag();
+            holder = (CategoryChildViewHolder) convertView.getTag();
+        }
+        CategoryChildBean child = getChild(groupPosition, childPosition);
+        if (child != null) {
+            ImageLoader.downloadImg(context, holder.ivCategoryChildImg, child.getImageUrl());
+            holder.tvCategoryChildName.setText(child.getName());
+        }
+        return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return false;
+    }
+
+    static class CategoryGroupViewHolder {
         @Bind(R.id.ivCategory_Group_Img)
         ImageView ivCategoryGroupImg;
         @Bind(R.id.tvCategory_Group_Name)
         TextView tvCategoryGroupName;
         @Bind(R.id.ivCategory_Group_Down)
         ImageView ivCategoryGroupDown;
-        @Bind(R.id.layout_category)
-        LinearLayout layoutCategory;
 
-        CategoryViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+        CategoryGroupViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class CategoryChildViewHolder {
+        @Bind(R.id.ivCategory_child_Img)
+        ImageView ivCategoryChildImg;
+        @Bind(R.id.tvCategory_child_Name)
+        TextView tvCategoryChildName;
+        @Bind(R.id.layout_category_child)
+        RelativeLayout layoutCategoryChild;
+
+        CategoryChildViewHolder(View view) {
+            ButterKnife.bind(this, view);
         }
     }
 }
