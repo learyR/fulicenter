@@ -10,11 +10,13 @@ import android.widget.RadioButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.utils.MFGT;
 
 public class MainActivity extends BaseActivity {
 
@@ -111,7 +113,8 @@ public class MainActivity extends BaseActivity {
                 mIndex = 3;
                 break;
             case R.id.personal:
-                mIndex = 4;
+                MFGT.gotoLoginActivity(this);
+//                mIndex = 4;
                 break;
         }
         setFragment();

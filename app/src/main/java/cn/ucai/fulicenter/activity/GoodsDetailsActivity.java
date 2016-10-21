@@ -37,7 +37,7 @@ public class GoodsDetailsActivity extends BaseActivity {
     GoodsDetailsActivity mContext;
 
     @Override
-     protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_goods_details);
         ButterKnife.bind(this);
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
@@ -87,7 +87,7 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     private int getAlbumImgCount(GoodsDetailsBean details) {
         if (details.getProperties() != null && details.getProperties().length > 0) {
-           return details.getProperties()[0].getAlbums().length;
+            return details.getProperties()[0].getAlbums().length;
         }
         return 0;
     }

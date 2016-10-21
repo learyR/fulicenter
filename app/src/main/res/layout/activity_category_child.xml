@@ -5,9 +5,46 @@
     android:layout_height="match_parent"
     tools:context="cn.ucai.fulicenter.activity.CategoryChildActivity"
     >
-    <include layout="@layout/common_head_title" android:id="@+id/common_head_title"/>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rrr"
+        android:background="@color/main_orange">
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/tvGoodsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="#fff"
+            android:layout_toRightOf="@+id/ivBack"
+            android:layout_centerVertical="true"
+            />
+        <cn.ucai.fulicenter.views.CatChildFilterButton
+            android:id="@+id/btnCatChildFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/arrow2_up"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:text="分类"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
     <LinearLayout
-        android:layout_below="@+id/common_head_title"
+        android:layout_below="@+id/rrr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -31,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="上架时间"
-            android:drawableRight="@drawable/arrow_order_up"
+            android:drawableRight="@drawable/arrow_order_down"
             android:background="@null"
             android:paddingRight="5dp"
             />
