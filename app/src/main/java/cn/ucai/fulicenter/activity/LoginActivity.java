@@ -12,6 +12,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -84,6 +85,7 @@ public class LoginActivity extends BaseActivity {
         final ProgressDialog pd = new ProgressDialog(mContext);
         pd.setMessage(getResources().getString(R.string.logining));
         pd.show();
+        L.i("userName"+userName+"password"+password);
         NetDao.login(mContext, userName, password, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
@@ -92,6 +94,10 @@ public class LoginActivity extends BaseActivity {
                     CommonUtils.showShortToast(R.string.login_fail);
                 } else {
                     if (result.isRetMsg()) {
+                        String strUser = result.getRetData().toString();
+                        OkHttpUtils<User> utils = new OkHttpUtils<>(mContext);
+                        User user = utils.parseJson(strUser, User.class);
+                        L.e("login"+user.toString());
                         CommonUtils.showLongToast(R.string.login_success);
                         MFGT.finish(mContext);
                     } else {
