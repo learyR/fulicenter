@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
+import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.activity.RegisterActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 
 
 public class MFGT {
@@ -26,6 +31,12 @@ public class MFGT {
         intent.setClass(context,cls);
         context.startActivity(intent);
     }
+
+    /**
+     * 跳转到商品详情Activity
+     * @param context
+     * @param goodsId 商品id
+     */
     public static void gotoGoodsDetailsActivity(Context context, int goodsId){
         Intent intent = new Intent();
         intent.setClass(context, GoodsDetailsActivity.class);
@@ -36,17 +47,48 @@ public class MFGT {
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+
+    /**
+     * 跳转到精选二级页面Activity
+     * @param context
+     * @param bean 一个精选的实体类
+     */
     public static void gotoBoutiqueChildActivity(Context context, BoutiqueBean bean){
         Intent intent = new Intent();
         intent.setClass(context, BoutiqueChildActivity.class);
         intent.putExtra(I.Boutique.CAT_ID,bean);
         startActivity(context,intent);
     }
-    public static void gotoCategoryChildActivity(Context context, int catId){
+
+    /**
+     * 跳转到分类二级页面的Activity中
+     *
+     * @param context
+     * @param catId
+     */
+    public static void gotoCategoryChildActivity(Context context, int catId, String groupName, ArrayList<CategoryChildBean> list) {
         Intent intent = new Intent();
         intent.setClass(context, CategoryChildActivity.class);
-        intent.putExtra(I.CategoryChild.CAT_ID,catId);
-        startActivity(context,intent);
+        intent.putExtra(I.CategoryChild.CAT_ID, catId);
+        intent.putExtra(I.CategoryGroup.NAME, groupName);
+        intent.putExtra(I.CategoryChild.ID, list);
+        startActivity(context, intent);
+    }
+
+    /**
+     * 跳转到LoginActivity
+     * @param context
+     */
+    public static void gotoLoginActivity(Activity context) {
+        startActivity(context, LoginActivity.class);
+    }
+
+    /**
+     * 跳转到RegisterActivity
+     * @param context
+     */
+    public static void gotoRegisterActivity(Activity context) {
+        startActivity(context, RegisterActivity.class);
     }
 
 }
