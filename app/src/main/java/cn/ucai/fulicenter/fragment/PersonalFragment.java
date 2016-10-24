@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.MainActivity;
@@ -72,5 +73,10 @@ public class PersonalFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.tvSetting)
+    public void onClick() {
+        MFGT.gotoSettingActivity(mContext);
     }
 }
