@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,17 +12,19 @@ import android.widget.RadioButton;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.fragment.PersonalFragment;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class MainActivity extends BaseActivity {
 
-
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Bind(R.id.layout_new_good)
     RadioButton mLayoutNewGood;
@@ -38,12 +41,14 @@ public class MainActivity extends BaseActivity {
     int mIndex;
     int mCurrentIndex;
 
+
     Fragment[] mFragment;
     GoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalFragment mPersonalFragment;
 
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +86,10 @@ public class MainActivity extends BaseActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container,mBoutiqueFragment)
                 .add(R.id.fragment_container,mCategoryFragment)
-                .add(R.id.fragment_container,mPersonalFragment)
                 .hide(mBoutiqueFragment)
                 .hide(mCategoryFragment)
-                .show(mNewGoodsFragment)
                 .hide(mPersonalFragment)
+                .show(mNewGoodsFragment)
                 .commit();
 
     }
@@ -120,7 +124,7 @@ public class MainActivity extends BaseActivity {
                 mIndex = 3;
                 break;
             case R.id.personal:
-                if (FuLiCenterApplication.getUserName() == null) {
+                if (FuLiCenterApplication.getUser() == null) {
                     MFGT.gotoLoginActivity(this);
                 } else {
                     mIndex = 4;
@@ -158,5 +162,20 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setFragment();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        L.e(TAG, "onActivityResult,requestCode" + requestCode);
+        if ( requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser()!=null) {
+            mIndex = 4;
+        }
     }
 }

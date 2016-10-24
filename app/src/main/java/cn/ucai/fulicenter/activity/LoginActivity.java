@@ -105,7 +105,6 @@ public class LoginActivity extends BaseActivity {
                         L.e("login"+user.toString());
 
                         UserDao dao = new UserDao(mContext);
-
                         boolean isSuccess= dao.saveUser(user);
                         if (isSuccess) {
                             SharedPreferenceUtils.getInstance(mContext).saveUser(user.getMuserName());

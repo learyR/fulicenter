@@ -32,6 +32,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 User user = FuLiCenterApplication.getUser();
+                L.e(TAG,"userName" + user);
                 String userName = SharedPreferenceUtils.getInstance(mContext).getUser();
                 L.e(TAG,"userName" + userName);
                 if (user == null && userName != null) {
