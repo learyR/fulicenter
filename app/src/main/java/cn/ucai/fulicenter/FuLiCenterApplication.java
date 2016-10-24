@@ -39,7 +39,12 @@ public class FuLiCenterApplication extends Application {
     public static void setUserName(String userName) {
         FuLiCenterApplication.userName = userName;
     }
+
     public static User getUser() {
         return user;
+    }
+
+    public static void setUser(User user) {
+        FuLiCenterApplication.user = user;
     }
 }

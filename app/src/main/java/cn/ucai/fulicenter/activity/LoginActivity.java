@@ -9,15 +9,19 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.dao.SharedPreferenceUtils;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.views.DisplayUtils;
 
 public class LoginActivity extends BaseActivity {
@@ -86,20 +90,31 @@ public class LoginActivity extends BaseActivity {
         pd.setMessage(getResources().getString(R.string.logining));
         pd.show();
         L.i("userName"+userName+"password"+password);
-        NetDao.login(mContext, userName, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.login(mContext, userName, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
-                pd.dismiss();
+            public void onSuccess(String str) {
+                Result result = ResultUtils.getResultFromJson(str, User.class);
                 if (result == null) {
                     CommonUtils.showShortToast(R.string.login_fail);
                 } else {
                     if (result.isRetMsg()) {
-                        String strUser = result.getRetData().toString();
+                        User user= (User) result.getRetData();
+                      /*  String strUser = result.getRetData().toString();
                         OkHttpUtils<User> utils = new OkHttpUtils<>(mContext);
-                        User user = utils.parseJson(strUser, User.class);
+                        User user = utils.parseJson(strUser, User.class);*/
                         L.e("login"+user.toString());
-                        CommonUtils.showLongToast(R.string.login_success);
-                        MFGT.finish(mContext);
+
+                        UserDao dao = new UserDao(mContext);
+
+                        boolean isSuccess= dao.saveUser(user);
+                        if (isSuccess) {
+                            SharedPreferenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                            FuLiCenterApplication.setUser(user);
+                            MFGT.finish(mContext);
+                            CommonUtils.showLongToast(R.string.login_success);
+                        } else {
+                            CommonUtils.showLongToast(R.string.user_database_error);
+                        }
                     } else {
                         if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER) {
                             CommonUtils.showLongToast(R.string.login_fail_unknow_user);
@@ -110,6 +125,7 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
                 }
+                pd.dismiss();
             }
 
             @Override

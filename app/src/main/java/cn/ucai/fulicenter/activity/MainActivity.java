@@ -16,6 +16,7 @@ import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.fragment.PersonalFragment;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class MainActivity extends BaseActivity {
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity {
     GoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
+    PersonalFragment mPersonalFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +71,21 @@ public class MainActivity extends BaseActivity {
         mNewGoodsFragment = new GoodsFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
+        mPersonalFragment = new PersonalFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
+        mFragment[4] = mPersonalFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container,mBoutiqueFragment)
                 .add(R.id.fragment_container,mCategoryFragment)
+                .add(R.id.fragment_container,mPersonalFragment)
                 .hide(mBoutiqueFragment)
                 .hide(mCategoryFragment)
                 .show(mNewGoodsFragment)
+                .hide(mPersonalFragment)
                 .commit();
 
     }
@@ -113,8 +120,11 @@ public class MainActivity extends BaseActivity {
                 mIndex = 3;
                 break;
             case R.id.personal:
-                MFGT.gotoLoginActivity(this);
-//                mIndex = 4;
+                if (FuLiCenterApplication.getUserName() == null) {
+                    MFGT.gotoLoginActivity(this);
+                } else {
+                    mIndex = 4;
+                }
                 break;
         }
         setFragment();

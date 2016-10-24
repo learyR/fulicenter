@@ -1,9 +1,8 @@
 package cn.ucai.fulicenter.bean;
 
-/**
- * Created by Administrator on 2016/10/16.
- */
-public class UserAvatar {
+import java.io.Serializable;
+
+public class User implements Serializable{
 
     /**
      * muserName : a952702
@@ -25,7 +24,7 @@ public class UserAvatar {
 
     @Override
     public String toString() {
-        return "UserAvatar{" +
+        return "User{" +
                 "muserName='" + muserName + '\'' +
                 ", muserNick='" + muserNick + '\'' +
                 ", mavatarId=" + mavatarId +
@@ -36,7 +35,7 @@ public class UserAvatar {
                 '}';
     }
 
-    public UserAvatar() {
+    public User() {
     }
 
     public String getMuserName() {
