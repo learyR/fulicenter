@@ -31,6 +31,7 @@ public class PersonalFragment extends BaseFragment {
     TextView tvUserName;
 
     MainActivity mContext;
+    User user;
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -54,7 +55,7 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        User user = FuLiCenterApplication.getUser();
+        user = FuLiCenterApplication.getUser();
         if (user == null) {
             MFGT.gotoLoginActivity(mContext);
         } else {
@@ -75,8 +76,18 @@ public class PersonalFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.tvSetting)
+    @OnClick({R.id.tvSetting,R.id.linearSetting})
     public void onClick() {
         MFGT.gotoSettingActivity(mContext);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
+            tvUserName.setText(user.getMuserNick());
+        }
     }
 }
