@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity {
             if (!mFragment[mIndex].isAdded()) {
                 ft.add(R.id.fragment_container, mFragment[mIndex]);
             }
-            ft.show(mFragment[mIndex]).commit();
+            ft.show(mFragment[mIndex]).commitNowAllowingStateLoss();
         }
         setRadioButtonStatus();
         mCurrentIndex=mIndex;
@@ -164,9 +164,13 @@ public class MainActivity extends BaseActivity {
         finish();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
+        if (mIndex == 4 && FuLiCenterApplication.getUser() == null) {
+            mIndex = 0;
+        }
         setFragment();
     }
 
