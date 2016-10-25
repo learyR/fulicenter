@@ -2,50 +2,69 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:id="@+id/setting"
     >
 <include layout="@layout/new_common_head_title"
     android:id="@+id/common_head_title"/>
-    <ImageView
-        android:id="@+id/ivAvatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/common_head_title"
-        android:src="@drawable/contactlogo"
-        />
-    <TextView
-        android:id="@+id/tvUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="userName"
-        android:textSize="20sp"
-        android:textColor="#000"
-        android:layout_toRightOf="@id/ivAvatar"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="10dp"
-        />
     <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/linearAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_below="@id/common_head_title"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户头像"
+            android:textSize="25sp"
+            android:textColor="#000"
+            android:layout_marginLeft="20dp"
+            />
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/contactlogo"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/right_arrow_icon"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/ivAvatar"
+        android:layout_height="80dp"
+        android:layout_below="@+id/linearAvatar"
         android:gravity="center_vertical"
-        android:id="@+id/linearNick"
+        android:id="@+id/linearUserName"
         >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="昵称"
+        android:text="用户名"
         android:textSize="25sp"
         android:layout_marginLeft="20dp"
+        android:textColor="#000"
         android:layout_weight="1"
         />
 
 
     <TextView
+        android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/ivRight"
@@ -59,32 +78,44 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/right_arrow_icon"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/ivAvatar"
             android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+
             />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/linearUserNick"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:background="@color/white"
         android:gravity="center_vertical"
-        android:layout_below="@+id/linearNick"
+        android:layout_below="@+id/linearUserName"
+        android:layout_marginTop="10dp"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的二维码"
+            android:text="用户昵称"
             android:layout_marginLeft="20dp"
             android:textSize="25sp"
+            android:textColor="#000"
             android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/tvUserNick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="userNick"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
             />
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/tb_icon_home_qrcode_gray"
-            android:layout_marginRight="20dp"
+            android:src="@drawable/right_arrow_icon"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
             />
     </LinearLayout>
     <Button

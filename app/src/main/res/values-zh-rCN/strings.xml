@@ -27,5 +27,11 @@
     <string name="login_fail_unknow_user">登录失败，用户不存在</string>
     <string name="login_fail_error_password">登录失败，用户名或密码错误</string>
     <string name="user_database_error">创建数据库错误</string>
+    <string name="update_nick_fail_unmodify">更新昵称失败，昵称未改变</string>
+    <string name="update_nick_fail">昵称跟新失败</string>
+    <string name="update_nick_success">昵称更新成功</string>
+    <string name="update_database_error">更新数据库错误</string>
+    <string name="update_avatar_fail">update avatar fail</string>
+    <string name="update_avatar_success">update avatar success</string>
 
 </resources>

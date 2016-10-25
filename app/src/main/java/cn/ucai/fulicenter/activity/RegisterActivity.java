@@ -117,8 +117,7 @@ public class RegisterActivity extends BaseActivity {
         NetDao.register(mContext, userName, userNick, password, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                pd.dismiss();
-                if (result == null) {
+                if (result.getRetCode() != 0) {
                     CommonUtils.showShortToast(R.string.register_fail);
                 } else {
                     if (result.isRetMsg()) {
@@ -130,6 +129,7 @@ public class RegisterActivity extends BaseActivity {
                         etUserName.requestFocus();
                     }
                 }
+                pd.dismiss();
             }
 
             @Override

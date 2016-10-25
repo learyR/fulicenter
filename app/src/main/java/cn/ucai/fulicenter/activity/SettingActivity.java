@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +29,7 @@ import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.OnSetAvatarListener;
 import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.views.DisplayUtils;
 
@@ -39,6 +43,7 @@ public class SettingActivity extends BaseActivity {
     TextView tvUserNick;
 
     User user;
+    OnSetAvatarListener mOnSetAvatarListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,8 @@ public class SettingActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.linearAvatar:
+                mOnSetAvatarListener= new OnSetAvatarListener(mContext, R.id.setting,
+                        user.getMuserName(), I.AVATAR_TYPE_USER_PATH);
                 break;
             case R.id.linearUserName:
                 CommonUtils.showShortToast("不能更改用户名");
@@ -93,6 +100,56 @@ public class SettingActivity extends BaseActivity {
                 changeNick();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        mOnSetAvatarListener.setAvatar(requestCode, data, ivAvatar);
+        if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
+            updateAvatar();
+        }
+    }
+
+    private void updateAvatar() {
+        File file =new File(OnSetAvatarListener.getAvatarPath(mContext,
+                user.getMavatarPath() + "/" + user.getMuserName()
+                        + I.AVATAR_SUFFIX_JPG));
+        final ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setMessage(getResources().getString(R.string.logining));
+        pd.show();
+        NetDao.updateAvatar(mContext, user.getMuserName(), file, new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String str) {
+                L.e("s" + str);
+                Result result = ResultUtils.getResultFromJson(str, User.class);
+                L.e("result+"+result);
+                if (result.getRetCode() !=0) {
+                    CommonUtils.showShortToast(R.string.update_avatar_fail);
+                } else {
+                    User user= (User) result.getRetData();
+                    if (result.isRetMsg()) {
+                        FuLiCenterApplication.setUser(user);
+                        ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
+//                            SharedPreferenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                        CommonUtils.showLongToast(R.string.update_avatar_success);
+                    }else {
+                        CommonUtils.showLongToast(R.string.update_avatar_fail);
+                    }
+                }
+                pd.dismiss();
+
+            }
+
+            @Override
+            public void onError(String error) {
+                CommonUtils.showShortToast("updateNick" + error);
+                L.e("updateNick error" + error);
+            }
+        });
     }
 
     private void changeNick() {
@@ -137,7 +194,7 @@ public class SettingActivity extends BaseActivity {
                         if (isSuccess) {
 //                            SharedPreferenceUtils.getInstance(mContext).saveUser(user.getMuserName());
                             FuLiCenterApplication.setUser(user);
-                            user.setMuserNick(nick);
+                            tvUserNick.setText(nick);
                             CommonUtils.showLongToast(R.string.update_nick_success);
                         } else {
                             CommonUtils.showLongToast(R.string.update_database_error);

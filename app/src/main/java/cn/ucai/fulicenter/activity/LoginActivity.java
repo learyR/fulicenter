@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(String str) {
                 Result result = ResultUtils.getResultFromJson(str, User.class);
-                if (result == null) {
+                if (result.getRetCode() !=0) {
                     CommonUtils.showShortToast(R.string.login_fail);
                 } else {
                     if (result.isRetMsg()) {
