@@ -8,6 +8,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -170,6 +171,13 @@ public class NetDao {
                 .post()
                 .execute(listener);
     }
+
+    /**
+     * 更新用户信息
+     * @param context
+     * @param userName
+     * @param listener
+     */
     public static void syncUserInfo(Context context, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_USER)
@@ -178,11 +186,34 @@ public class NetDao {
                 .execute(listener);
     }
 
+    /**
+     * 获取收藏数量
+     * @param context
+     * @param userName
+     * @param listener
+     */
     public static void getCollectsCount(Context context, String userName, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
                 .addParam(I.Collect.USER_NAME, userName)
                 .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    /**
+     * 下载收藏的物品
+     * @param context
+     * @param userName
+     * @param pageId
+     * @param listener
+     */
+    public static void downloadCollects(Context context,String userName, int pageId, OkHttpUtils.OnCompleteListener<CollectBean[]> listener){
+        OkHttpUtils<CollectBean[]> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                .addParam(I.Collect.USER_NAME,userName)
+                .addParam(I.PAGE_ID,String.valueOf(pageId))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .targetClass(CollectBean[].class)
                 .execute(listener);
     }
 }

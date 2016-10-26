@@ -85,6 +85,7 @@
         android:background="@drawable/tb_btn_login_orange_normal"
         >
         <LinearLayout
+            android:id="@+id/linearCollection"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -380,7 +381,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="暂无可用优惠卷"
+                android:text="一卡在手，逛店无忧"
                 android:textSize="20sp"
                 android:layout_toLeftOf="@+id/ivRightVip"
                 android:layout_centerVertical="true"

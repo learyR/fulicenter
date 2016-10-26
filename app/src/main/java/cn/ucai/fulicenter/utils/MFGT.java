@@ -10,6 +10,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
+import cn.ucai.fulicenter.activity.CollectsActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
@@ -108,4 +109,12 @@ public class MFGT {
     public static void gotoSettingActivity(Activity context) {
         startActivity(context, SettingActivity.class);
     }
+    /**
+     * 跳转到CollectionActivity
+     * @param context
+     */
+    public static void gotoCollectionActivity(Activity context) {
+        startActivity(context, CollectsActivity.class);
+    }
+
 }
