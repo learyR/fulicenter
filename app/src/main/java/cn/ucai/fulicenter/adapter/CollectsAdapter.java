@@ -6,22 +6,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CollectBean;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.net.OkHttpUtils;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.views.FooterViewHolder;
 
-/**
- * Created by Administrator on 2016/10/25.
- */
+
 public class CollectsAdapter extends RecyclerView.Adapter {
     ArrayList<CollectBean> newGoodsList;
     Context context;
@@ -75,7 +81,9 @@ public class CollectsAdapter extends RecyclerView.Adapter {
         newGoodsViewHolder.tvGoodsName.setText(newGoods.getGoodsName());
         newGoodsViewHolder.ivDelete.setImageResource(R.mipmap.delete);
         ImageLoader.downloadImg(context, newGoodsViewHolder.ivNewGoods, newGoods.getGoodsThumb());
+        newGoodsViewHolder.layoutNewGood.setTag(newGoods);
     }
+
     private int getFooter() {
         return isMore ? R.string.load_more : R.string.no_more;
     }
@@ -93,6 +101,7 @@ public class CollectsAdapter extends RecyclerView.Adapter {
             return I.TYPE_ITEM;
         }
     }
+
     public void initData(ArrayList<CollectBean> goodsList) {
         if (newGoodsList != null) {
             this.newGoodsList.clear();
@@ -105,17 +114,51 @@ public class CollectsAdapter extends RecyclerView.Adapter {
         this.newGoodsList.addAll(goodsList);
         notifyDataSetChanged();
     }
-    class CollectsViewHolder extends RecyclerView.ViewHolder{
+
+    class CollectsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivNewGoods)
         ImageView ivNewGoods;
         @Bind(R.id.tvGoodsName)
         TextView tvGoodsName;
         @Bind(R.id.ivDelete)
         ImageView ivDelete;
+        @Bind(R.id.layout_new_good)
+        RelativeLayout layoutNewGood;
 
         public CollectsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+        @OnClick(R.id.layout_new_good)
+        public void onGoodsItemClick() {
+            final CollectBean goods = (CollectBean) layoutNewGood.getTag();
+           /* context.startActivity(new Intent(context, GoodsDetailsActivity.class)
+                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));*/
+            MFGT.gotoGoodsDetailsActivity(context, goods.getGoodsId());
+        }
+        @OnClick(R.id.ivDelete)
+        public void onDeleteCollect(){
+            final CollectBean goods = (CollectBean) layoutNewGood.getTag();
+            String userName = FuLiCenterApplication.getUser().getMuserName();
+            NetDao.deleteCollect(context, userName, goods.getGoodsId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result.isSuccess()) {
+                        newGoodsList.remove(goods);
+                        notifyDataSetChanged();
+                    } else {
+                        CommonUtils.showLongToast(result!=null?result.getMsg():context.getResources().getString(R.string.delete_collect_fail));
+                    }
+                }
+                @Override
+                public void onError(String error) {
+                    L.e("CollectsAdapter"+error);
+                    CommonUtils.showLongToast(context.getResources().getString(R.string.delete_collect_fail));
+                }
+            });
+        }
+
     }
+
+
 }

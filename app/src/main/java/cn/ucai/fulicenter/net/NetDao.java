@@ -216,4 +216,54 @@ public class NetDao {
                 .targetClass(CollectBean[].class)
                 .execute(listener);
     }
+
+    /**
+     * 删除收藏的东西
+     * @param context
+     * @param userName
+     * @param goodsId
+     * @param listener
+     */
+    public static void deleteCollect(Context context, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                .addParam(I.Collect.USER_NAME, userName)
+                .addParam(I.Collect.GOODS_ID, String.valueOf(goodsId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    /**
+     * 是否收藏
+     * @param context
+     * @param userName
+     * @param goodsId
+     * @param listener
+     */
+    public static void isCollect(Context context, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_IS_COLLECT)
+                .addParam(I.Collect.USER_NAME, userName)
+                .addParam(I.Collect.GOODS_ID, String.valueOf(goodsId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    /**
+     * 添加收藏
+     * @param context
+     * @param userName
+     * @param goodsId
+     * @param listener
+     */
+    public static void addCollect(Context context, String userName, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
+                .addParam(I.Collect.USER_NAME, userName)
+                .addParam(I.Collect.GOODS_ID, String.valueOf(goodsId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+
 }

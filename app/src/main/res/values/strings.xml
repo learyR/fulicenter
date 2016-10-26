@@ -36,4 +36,5 @@
     <string name="update_database_error">update database error</string>
     <string name="update_avatar_fail">update avatar fail</string>
     <string name="update_avatar_success">update avatar success</string>
+    <string name="delete_collect_fail">delete collect fail</string>
 </resources>

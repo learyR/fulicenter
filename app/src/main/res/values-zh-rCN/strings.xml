@@ -31,7 +31,8 @@
     <string name="update_nick_fail">昵称跟新失败</string>
     <string name="update_nick_success">昵称更新成功</string>
     <string name="update_database_error">更新数据库错误</string>
-    <string name="update_avatar_fail">update avatar fail</string>
-    <string name="update_avatar_success">update avatar success</string>
+    <string name="update_avatar_fail">更新头像失败</string>
+    <string name="update_avatar_success">更新头像成功</string>
+    <string name="delete_collect_fail">删除收藏失败</string>
 
 </resources>
