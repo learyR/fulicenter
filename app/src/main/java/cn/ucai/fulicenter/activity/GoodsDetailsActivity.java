@@ -135,11 +135,10 @@ public class GoodsDetailsActivity extends BaseActivity {
                 public void onSuccess(MessageBean result) {
                     if (result != null && result.isSuccess()) {
                         isCollect = true;
-                        updateGoodsCollectsStatus();
                     } else {
                         isCollect = false;
-                        updateGoodsCollectsStatus();
                     }
+                    updateGoodsCollectsStatus();
                 }
 
                 @Override
@@ -164,5 +163,45 @@ public class GoodsDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         isCollect();
+    }
+
+    @OnClick(R.id.ivGoodsDetailCollect)
+    public void onCollect() {
+        User user = FuLiCenterApplication.getUser();
+        if (user == null) {
+            MFGT.gotoLoginActivity(mContext);
+        } else {
+            if (isCollect) {
+                NetDao.deleteCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            isCollect = !isCollect;
+                            updateGoodsCollectsStatus();
+                            CommonUtils.showShortToast("取消收藏成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            } else {
+                NetDao.addCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        if (result != null && result.isSuccess()) {
+                            isCollect = !isCollect;
+                            updateGoodsCollectsStatus();
+                            CommonUtils.showShortToast("添加收藏成功");
+                        }
+                    }
+                    @Override
+                    public void onError(String error) {
+                    }
+                });
+            }
+        }
     }
 }

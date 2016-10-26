@@ -61,7 +61,7 @@ public class CollectsActivity extends BaseActivity {
             public void onRefresh() {
                 pageId = 1;
                 srl.setRefreshing(true);
-                tvRefresh.setVisibility(View.VISIBLE);
+                tvRefresh.setVisibility(View.VISIBLE) ;
                 downloadCollection(I.ACTION_PULL_DOWN);
             }
         });
@@ -149,5 +149,11 @@ public class CollectsActivity extends BaseActivity {
         rv.setHasFixedSize(true);
         rv.addItemDecoration(new SpaceItemDecoration(15));
         rv.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 }
