@@ -15,15 +15,21 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.dao.UserDao;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.ResultUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class PersonalFragment extends BaseFragment {
-
 
     @Bind(R.id.ivAvatar)
     ImageView ivAvatar;
@@ -32,6 +38,8 @@ public class PersonalFragment extends BaseFragment {
 
     MainActivity mContext;
     User user;
+    @Bind(R.id.tvCollect)
+    TextView tvCollect;
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -76,7 +84,7 @@ public class PersonalFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.tvSetting,R.id.linearSetting})
+    @OnClick({R.id.tvSetting, R.id.linearSetting})
     public void onClick() {
         MFGT.gotoSettingActivity(mContext);
     }
@@ -88,6 +96,59 @@ public class PersonalFragment extends BaseFragment {
         if (user != null) {
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
             tvUserName.setText(user.getMuserNick());
+            syncUserInfo();
+            syncCollectsCount();
         }
     }
+
+    @OnClick(R.id.linearCollection)
+    public void onClickCollection() {
+        MFGT.gotoCollectionActivity(mContext);
+    }
+
+    private void syncUserInfo() {
+        NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String str) {
+                Result result = ResultUtils.getResultFromJson(str, User.class);
+                if (result != null) {
+                    User u = (User) result.getRetData();
+                    if (!user.equals(u)) {
+                        UserDao dao = new UserDao(mContext);
+                        boolean b = dao.saveUser(u);
+                        if (b) {
+                            FuLiCenterApplication.setUser(u);
+                            user = u;
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
+                            tvUserName.setText(user.getMuserNick());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+    private void syncCollectsCount() {
+        NetDao.getCollectsCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result.isSuccess()) {
+                    tvCollect.setText(result.getMsg());
+                } else {
+                    tvCollect.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                tvCollect.setText(String.valueOf(0));
+            }
+        });
+    }
+
 }
