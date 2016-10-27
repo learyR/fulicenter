@@ -18,6 +18,8 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.views.FooterViewHolder;
 
 
@@ -66,14 +68,17 @@ public class CartAdapter extends RecyclerView.Adapter {
             footerViewHolder.tvFooter.setText(getFooter());
             return;
         }
-        CartViewHolder boutiqueViewHolder = (CartViewHolder) holder;
+        CartViewHolder cartViewHolder = (CartViewHolder) holder;
         CartBean cartBean = cartList.get(position);
+        GoodsDetailsBean goods = cartBean.getGoods();
+        if (goods != null) {
+            ImageLoader.downloadImg(context, cartViewHolder.ivCartGoods, goods.getGoodsThumb());
+            cartViewHolder.tvCartGoodsName.setText(goods.getGoodsName());
+            cartViewHolder.tvGoodsPrice.setText(goods.getCurrencyPrice());
+        }
+        cartViewHolder.tvCartCount.setText(cartBean.getCount());
+        cartViewHolder.cartCheckBox.setChecked(false);
 
-       /* boutiqueViewHolder.tvBoutiqueTitle.setText(boutiqueBean.getTitle());
-        boutiqueViewHolder.tvBoutiqueName.setText(boutiqueBean.getName());
-        boutiqueViewHolder.tvBoutiqueDescription.setText(boutiqueBean.getDescription());
-        ImageLoader.downloadImg(context, boutiqueViewHolder.ivBoutique, boutiqueBean.getImageurl());
-        boutiqueViewHolder.layoutBoutique.setTag(boutiqueBean);*/
     }
 
     private int getFooter() {

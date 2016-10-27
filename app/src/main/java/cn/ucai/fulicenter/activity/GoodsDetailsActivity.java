@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -45,6 +46,8 @@ public class GoodsDetailsActivity extends BaseActivity {
     boolean isCollect = false;
     @Bind(R.id.ivGoodsDetailCollect)
     ImageView ivGoodsDetailCollect;
+    @Bind(R.id.ivGoodsDetailShare)
+    ImageView ivGoodsDetailShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +215,8 @@ public class GoodsDetailsActivity extends BaseActivity {
     public void onClickShare() {
         showShare();
     }
+
+
     private void showShare() {
         ShareSDK.initSDK(this);
         OnekeyShare oks = new OnekeyShare();

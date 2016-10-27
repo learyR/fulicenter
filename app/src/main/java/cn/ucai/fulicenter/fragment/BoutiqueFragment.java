@@ -39,6 +39,7 @@ public class BoutiqueFragment extends BaseFragment {
     RecyclerView rvBoutique;
     @Bind(R.id.srlBoutique)
     SwipeRefreshLayout srlBoutique;
+
     MainActivity mContext;
     LinearLayoutManager mLayoutManager;
     ArrayList<BoutiqueBean> boutiqueList;

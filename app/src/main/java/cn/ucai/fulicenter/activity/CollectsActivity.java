@@ -1,5 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +31,7 @@ import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
 public class CollectsActivity extends BaseActivity {
     CollectsActivity mContext;
+
     @Bind(R.id.tvRefresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
@@ -39,6 +44,8 @@ public class CollectsActivity extends BaseActivity {
     int pageId = 1;
     GridLayoutManager mLayoutManager;
     User user = null;
+
+
 
 
     @Override
@@ -156,4 +163,8 @@ public class CollectsActivity extends BaseActivity {
         super.onResume();
         initData();
     }
+
+
+
+
 }

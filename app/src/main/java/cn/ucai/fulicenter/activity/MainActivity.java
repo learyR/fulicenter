@@ -15,6 +15,7 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.fragment.CartFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.GoodsFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
     PersonalFragment mPersonalFragment;
+    CartFragment mCartFragment;
 
     String name;
 
@@ -77,9 +79,11 @@ public class MainActivity extends BaseActivity {
         mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
         mPersonalFragment = new PersonalFragment();
+        mCartFragment = new CartFragment();
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
+        mFragment[3] = mCartFragment;
         mFragment[4] = mPersonalFragment;
         getSupportFragmentManager()
                 .beginTransaction()
@@ -121,7 +125,11 @@ public class MainActivity extends BaseActivity {
                 mIndex = 2;
                 break;
             case R.id.layout_cart:
-                mIndex = 3;
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.gotoLoginActivityFromCart(this);
+                } else {
+                    mIndex = 3;
+                }
                 break;
             case R.id.personal:
                 if (FuLiCenterApplication.getUser() == null) {
@@ -178,8 +186,12 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         L.e(TAG, "onActivityResult,requestCode" + requestCode);
-        if ( requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser()!=null) {
-            mIndex = 4;
+        if ( FuLiCenterApplication.getUser()!=null) {
+            if (requestCode == I.REQUEST_CODE_LOGIN) {
+                mIndex = 4;
+            } else if (requestCode == I.REQUEST_CODE_CART) {
+                mIndex = 3;
+            }
         }
     }
 }
