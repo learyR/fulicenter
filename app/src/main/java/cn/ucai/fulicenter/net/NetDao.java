@@ -265,6 +265,13 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
+
+    /**
+     * 下载购物车
+     * @param context
+     * @param userName
+     * @param listener
+     */
     public static void downloadCart(Context context, String userName, OkHttpUtils.OnCompleteListener<String> listener) {
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_CARTS)
@@ -273,5 +280,35 @@ public class NetDao {
                 .execute(listener);
     }
 
+    /**
+     * 更新购物车
+     * @param context
+     * @param cartId
+     * @param count
+     * @param listener
+     */
+    public static void updateCart(Context context, int cartId, int count, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_CART)
+                .addParam(I.Cart.ID, cartId+"")
+                .addParam(I.Cart.COUNT, String.valueOf(count))
+                .addParam(I.Cart.IS_CHECKED,0+"")
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+
+    /**
+     * 删除购物车
+     * @param context
+     * @param cartId
+     * @param listener
+     */
+    public static void deleteCart(Context context, int cartId, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.Cart.ID, cartId+"")
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
 
 }

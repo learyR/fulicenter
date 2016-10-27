@@ -7,7 +7,9 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+
+        >
 
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -16,10 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:id="@+id/layoutCart"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <include layout="@layout/layout_refresh_title"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv"
                 android:layout_width="match_parent"
@@ -27,6 +31,15 @@
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
+        <TextView
+            android:id="@+id/tvNothing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="购物车空空如也"
+            android:textSize="25sp"
+            android:textColor="#f60"
+            android:gravity="center"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -45,6 +58,7 @@
                 android:textSize="20sp"
                 />
             <TextView
+                android:id="@+id/tvSumPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="合计: $234"
@@ -55,6 +69,7 @@
                 android:layout_marginTop="15dp"
                 />
             <TextView
+                android:id="@+id/RankPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="节省: $234"
