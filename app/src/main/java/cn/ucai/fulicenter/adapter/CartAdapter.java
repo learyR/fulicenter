@@ -25,6 +25,7 @@ import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.views.FooterViewHolder;
 
 
@@ -92,6 +93,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         });
         cartViewHolder.ivCartAdd.setTag(position);
         cartViewHolder.ivCartDel.setTag(position);
+        cartViewHolder.itemCart.setTag(cartBean.getGoodsId());
     }
 
     private int getFooter() {
@@ -138,12 +140,17 @@ public class CartAdapter extends RecyclerView.Adapter {
         ImageView ivCartDel;
         @Bind(R.id.tvGoodsPrice)
         TextView tvGoodsPrice;
-       /* @Bind(R.id.item_cart)
-        RelativeLayout itemCart;*/
+        @Bind(R.id.item_cart)
+        RelativeLayout itemCart;
 
         CartViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+        @OnClick(R.id.item_cart)
+        public void onItem(){
+            int goodsId = (int) itemCart.getTag();
+            MFGT.gotoGoodsDetailsActivity(context, goodsId);
         }
         @OnClick(R.id.ivCartAdd)
         public void onCartAdd() {
@@ -192,6 +199,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                     public void onSuccess(MessageBean result) {
                         if (result.isSuccess()) {
                             cartList.remove(position);
+                            context.sendBroadcast(new Intent(I.BROADCAST_UPDATE_CAST));
                             notifyDataSetChanged();
                         }
                     }

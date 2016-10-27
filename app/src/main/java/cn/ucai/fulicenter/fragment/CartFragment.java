@@ -196,7 +196,9 @@ public class CartFragment extends BaseFragment {
     }
 
     private void setCartLayout(boolean hasCart) {
-
+       /* if (boutiqueList != null && boutiqueList.size() > 0) {
+            hasCart = true;
+        }*/
         layoutCart.setVisibility(hasCart ? View.VISIBLE : View.GONE);
         tvNothing.setVisibility(hasCart ? View.GONE : View.VISIBLE);
         rv.setVisibility(hasCart ? View.VISIBLE : View.GONE);
@@ -216,7 +218,6 @@ public class CartFragment extends BaseFragment {
             tvSumPrice.setText("合计: ￥" + sumPrice);
             tvRankPrice.setText("节省: ￥" +(sumPrice-rankPrice));
         } else {
-            setCartLayout(false);
             tvSumPrice.setText("合计: ￥0.0");
             tvRankPrice.setText("节省: ￥0.0" );
         }
@@ -241,6 +242,7 @@ public class CartFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             sumPrice();
+            setCartLayout(boutiqueList != null && boutiqueList.size() > 0);
         }
     }
 
