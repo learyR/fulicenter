@@ -177,7 +177,6 @@ public class CartAdapter extends RecyclerView.Adapter {
             final int position = (int) ivCartDel.getTag();
             CartBean cart = cartList.get(position);
             if (cart.getCount() > 1) {
-
                 NetDao.updateCart(context, cart.getId(), cart.getCount() - 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
                     @Override
                     public void onSuccess(MessageBean result) {
