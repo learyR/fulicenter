@@ -34,5 +34,7 @@
     <string name="update_avatar_fail">更新头像失败</string>
     <string name="update_avatar_success">更新头像成功</string>
     <string name="delete_collect_fail">删除收藏失败</string>
+    <string name="add_cart_success">添加购物车成功</string>
+    <string name="add_cart_fail">添加购物车失败</string>
 
 </resources>

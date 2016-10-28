@@ -37,4 +37,6 @@
     <string name="update_avatar_fail">update avatar fail</string>
     <string name="update_avatar_success">update avatar success</string>
     <string name="delete_collect_fail">delete collect fail</string>
+    <string name="add_cart_success">add cart success</string>
+    <string name="add_cart_fail">add cart fail</string>
 </resources>

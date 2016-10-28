@@ -75,15 +75,13 @@
                 android:checked="false"
                 android:gravity="center_horizontal"
                 android:textColor="@color/main_botton_text_color"/>
-            <TextView
+           <!-- <TextView
                 android:id="@+id/tvGoodsNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10"
                 android:layout_marginLeft="30dp"
                 android:textColor="#fff"
-                android:background="@drawable/cart_hint"
-                />
+                />-->
 
         </RelativeLayout>
         <RadioButton
