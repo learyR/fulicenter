@@ -11,7 +11,7 @@ import com.pingplusplus.android.PingppLog;
 import com.pingplusplus.libone.PaymentHandler;
 import com.pingplusplus.libone.PingppOne;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,9 +26,11 @@ import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.views.DisplayUtils;
@@ -172,8 +174,6 @@ public class PayActivity extends BaseActivity implements PaymentHandler{
         String orderNo = new SimpleDateFormat("yyyyMMddhhmmss")
                 .format(new Date());
 
-        // 计算总金额（以分为单位）
-
         // 构建账单json对象
         JSONObject bill = new JSONObject();
 
@@ -193,7 +193,6 @@ public class PayActivity extends BaseActivity implements PaymentHandler{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         //壹收款: 创建支付通道的对话框
         PingppOne.showPaymentChannels(getSupportFragmentManager(), bill.toString(), URL, this);
     }
@@ -209,7 +208,7 @@ public class PayActivity extends BaseActivity implements PaymentHandler{
             // 0：取消
             // 1：成功
             // 2:应用内快捷支付支付结果
-
+            L.e("它的代码+" + data.getExtras().getInt("code"));
             if (data.getExtras().getInt("code") != 2) {
                 PingppLog.d(data.getExtras().getString("result") + "  " + data.getExtras().getInt("code"));
             } else {
@@ -221,11 +220,39 @@ public class PayActivity extends BaseActivity implements PaymentHandler{
                     } else if (resultJson.has("success")) {
                         result = resultJson.optJSONObject("success").toString();
                     }
-                    PingppLog.d("result::" + result);
+                    L.e("它的代码" + result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+            int resultCode = data.getExtras().getInt("code");
+            switch (resultCode) {
+                case 1:
+                    patSuccess();
+                    CommonUtils.showLongToast(R.string.pingpp_title_activity_pay_sucessed);
+                    break;
+                case -1:
+                    CommonUtils.showLongToast(R.string.pingpp_pay_failed);
+                    finish();
+                    break;
+            }
         }
+    }
+
+    private void patSuccess() {
+        for (String id : ids) {
+            NetDao.deleteCart(mContext, Integer.valueOf(id), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+        finish();
     }
 }
