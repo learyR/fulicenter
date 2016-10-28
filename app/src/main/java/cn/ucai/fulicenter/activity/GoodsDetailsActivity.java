@@ -1,6 +1,5 @@
 package cn.ucai.fulicenter.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -48,6 +47,8 @@ public class GoodsDetailsActivity extends BaseActivity {
     ImageView ivGoodsDetailCollect;
     @Bind(R.id.ivGoodsDetailShare)
     ImageView ivGoodsDetailShare;
+    @Bind(R.id.tvGoodsDetailGoodsNum)
+    TextView tvGoodsDetailGoodsNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,5 +247,31 @@ public class GoodsDetailsActivity extends BaseActivity {
 
 // 启动分享GUI
         oks.show(this);
+    }
+
+    @OnClick(R.id.ivGoodsDetailCart)
+    public void onClickCart() {
+        User user = FuLiCenterApplication.getUser();
+        if (user == null) {
+            MFGT.gotoLoginActivity(mContext);
+        } else {
+            NetDao.addCart(mContext, goodsId, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result.isSuccess()) {
+                        CommonUtils.showShortToast(R.string.add_cart_success);
+                    } else {
+                        CommonUtils.showShortToast(R.string.add_cart_fail);
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    CommonUtils.showShortToast(R.string.add_cart_fail);
+                }
+            });
+
+        }
+
     }
 }
