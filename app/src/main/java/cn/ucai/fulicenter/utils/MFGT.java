@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.activity.CollectsActivity;
 import cn.ucai.fulicenter.activity.GoodsDetailsActivity;
 import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
+import cn.ucai.fulicenter.activity.PayActivity;
 import cn.ucai.fulicenter.activity.RegisterActivity;
 import cn.ucai.fulicenter.activity.SettingActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
@@ -93,7 +94,6 @@ public class MFGT {
         startActivityForResult(context,intent,I.REQUEST_CODE_CART);
     }
 
-
     /**
      * 跳转到RegisterActivity
      * @param context
@@ -122,6 +122,16 @@ public class MFGT {
      */
     public static void gotoCollectionActivity(Activity context) {
         startActivity(context, CollectsActivity.class);
+    }
+
+    /**
+     * 跳转到提交订单界面
+     * @param context
+     * @param cartsId
+     */
+    public static void gotoPay(Activity context,String cartsId) {
+        Intent intent = new Intent(context, PayActivity.class).putExtra(I.Cart.ID, cartsId);
+        startActivity(context,intent);
     }
 
 }

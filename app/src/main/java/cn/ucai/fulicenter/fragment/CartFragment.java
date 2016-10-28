@@ -33,6 +33,7 @@ import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
@@ -65,6 +66,7 @@ public class CartFragment extends BaseFragment {
 
 
     updateCartReceiver mReceiver;
+    String catrIds = "";
 
     public CartFragment() {
         // Required empty public constructor
@@ -208,9 +210,11 @@ public class CartFragment extends BaseFragment {
     private void sumPrice(){
         int sumPrice = 0;
         int rankPrice = 0;
+        catrIds = "";
         if (boutiqueList != null && boutiqueList.size() > 0) {
             for (CartBean c : boutiqueList) {
                 if (c.isChecked()) {
+                    catrIds += c.getId() + ",";
                     sumPrice += getPrice(c.getGoods().getCurrencyPrice()) * c.getCount();
                     rankPrice += getPrice(c.getGoods().getRankPrice()) * c.getCount();
                 }
@@ -218,6 +222,7 @@ public class CartFragment extends BaseFragment {
             tvSumPrice.setText("合计: ￥" + sumPrice);
             tvRankPrice.setText("节省: ￥" +(sumPrice-rankPrice));
         } else {
+            catrIds = "";
             tvSumPrice.setText("合计: ￥0.0");
             tvRankPrice.setText("节省: ￥0.0" );
         }
@@ -236,6 +241,11 @@ public class CartFragment extends BaseFragment {
 
     @OnClick(R.id.tvSum)
     public void onClick() {
+        if (!catrIds.equals("") && catrIds != null && catrIds.length() > 0) {
+            MFGT.gotoPay(mContext, catrIds);
+        } else {
+            CommonUtils.showShortToast(R.string.order_nothing);
+        }
     }
 
     class updateCartReceiver extends BroadcastReceiver {
@@ -244,6 +254,12 @@ public class CartFragment extends BaseFragment {
             sumPrice();
             setCartLayout(boutiqueList != null && boutiqueList.size() > 0);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 
     @Override

@@ -47,8 +47,6 @@ public class GoodsDetailsActivity extends BaseActivity {
     ImageView ivGoodsDetailCollect;
     @Bind(R.id.ivGoodsDetailShare)
     ImageView ivGoodsDetailShare;
-    @Bind(R.id.tvGoodsDetailGoodsNum)
-    TextView tvGoodsDetailGoodsNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

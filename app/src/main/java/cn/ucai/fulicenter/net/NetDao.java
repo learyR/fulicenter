@@ -311,4 +311,14 @@ public class NetDao {
                 .execute(listener);
     }
 
+    public static void addCart(Context context, int goodsId, String userName, OkHttpUtils.OnCompleteListener<MessageBean> listener) {
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Cart.GOODS_ID, goodsId + "")
+                .addParam(I.Cart.USER_NAME, userName)
+                .addParam(I.Cart.COUNT, 1 + "")
+                .addParam(I.Cart.IS_CHECKED, 0 + "")
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
 }
