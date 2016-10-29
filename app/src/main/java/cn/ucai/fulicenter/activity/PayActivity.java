@@ -225,6 +225,7 @@ public class PayActivity extends BaseActivity implements PaymentHandler{
                     e.printStackTrace();
                 }
             }
+
             int resultCode = data.getExtras().getInt("code");
             switch (resultCode) {
                 case 1:

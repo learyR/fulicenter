@@ -150,7 +150,7 @@ public class MainActivity extends BaseActivity {
             if (!mFragment[mIndex].isAdded()) {
                 ft.add(R.id.fragment_container, mFragment[mIndex]);
             }
-            ft.show(mFragment[mIndex]).commit();
+            ft.show(mFragment[mIndex]).commitAllowingStateLoss();
         }
         setRadioButtonStatus();
         mCurrentIndex=mIndex;
